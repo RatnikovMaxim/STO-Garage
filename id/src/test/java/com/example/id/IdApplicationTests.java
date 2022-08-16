@@ -1,13 +1,13 @@
 package com.example.id;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+//import org.junit.jupiter.api.Test;
+//import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class IdApplicationTests {
+//@SpringBootTest
+//class IdApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+  //  @Test
+   // void contextLoads() {
+  //  }
 
-}
+//}
