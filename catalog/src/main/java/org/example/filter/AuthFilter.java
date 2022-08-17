@@ -1,11 +1,11 @@
 package com.example.filter;
 
+import com.example.id.dto.VerificationRequestDTO;
+import com.example.id.dto.VerificationResponseDTO;
+import com.example.id.security.Authentication;
 import lombok.extern.slf4j.Slf4j;
 
 import org.example.client.IdServiceClient;
-import org.example.dto.VerificationRequestDTO;
-import org.example.dto.VerificationResponseDTO;
-import org.example.security.Authentication;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

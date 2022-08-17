@@ -1,4 +1,8 @@
+
 # STO-Garage
+
+Аналогия проекта:https://service24-h.ru/
+
 id - Саша,
 order,history - Макс,
 catalog, git(private repo) - Амир,
