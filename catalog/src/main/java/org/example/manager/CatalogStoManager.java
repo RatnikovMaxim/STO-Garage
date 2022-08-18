@@ -1,10 +1,12 @@
 package org.example.manager;
 
 import com.example.id.repository.UserRepository;
+import com.example.id.security.Authentication;
 import lombok.RequiredArgsConstructor;
 import org.example.controller.CatalogStoController;
 import org.example.dto.CatalogStoResponseDTO;
 import org.example.entity.CatalogStoEntity;
+import org.example.repository.CatalogStoRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +18,7 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class CatalogStoManager {
-    private final CatalogStoController catalogStoRepository;
+    private final CatalogStoRepository catalogStoRepository;
     private final UserRepository userRepository;
 
 

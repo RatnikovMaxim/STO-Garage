@@ -11,12 +11,12 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=db
     command: ["postgres", "-c", "log_statement=all"]
-  musicdb:
+  catalogdb:
     image: postgres:14-alpine
     ports:
       - '5402:5432'
     volumes:
-      - ./music/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+      - ./catalog/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
     environment:
       - POSTGRES_USER=app
       - POSTGRES_PASSWORD=password

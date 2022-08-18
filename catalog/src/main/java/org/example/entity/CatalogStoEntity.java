@@ -25,7 +25,7 @@ public class CatalogStoEntity {
     private String operating_mode;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String services;
-    @Column(nullable = false, columnDefinition = "")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private long telephone;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String photo;

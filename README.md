@@ -13,3 +13,14 @@ bonus - Артём.
 ссылка на диаграмму: https://app.diagrams.net/#G1JXTLqmksw1cMG06LA5lJQNVUMQGhYrZc
 
 Предварительный срок сдачи проекта  27 августа 2022г.
+
+
+
+
+
+zookeeper:
+image: bitnami/zookeeper
+environment:
+- ALLOW_ANONYMOUS_LOGIN=yes
+ports:
+- '2181:2181'

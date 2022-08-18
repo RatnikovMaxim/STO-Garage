@@ -8,4 +8,4 @@ CREATE TABLE catalogs_sto (
     photo TEXT NOT NULL,
     removed BOOLEAN     NOT NULL DEFAULT FALSE,
     created timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
-)
+);

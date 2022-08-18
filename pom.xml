@@ -17,7 +17,7 @@
     <modules>
         <module>id</module>
         <module>catalog</module>
-        <module>planer</module>
+        <module>planner</module>
         <module>order</module>
         <module>message</module>
         <module>bonus</module>
@@ -25,3 +25,4 @@
     </modules>
 
 </project>
+
