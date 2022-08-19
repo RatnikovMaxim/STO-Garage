@@ -30,7 +30,7 @@ public class CatalogStoRequestDTO {
     private String services;
 
     @Pattern(regexp = "^(\\+ \\d{1}( )?)?(\\ d{3}[ ]?)(\\ d{2}[ ]?){2}\\ d{2}$")
-    private long telephone;
+    private String telephone;
 
     @NotBlank
     private String photo;

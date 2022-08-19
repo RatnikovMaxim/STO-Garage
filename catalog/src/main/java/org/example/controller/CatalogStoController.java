@@ -32,6 +32,7 @@ public class CatalogStoController {
         final CatalogStoResponseDTO responseDTO = manager.getById(authentication, id);
         return responseDTO;
     }
+    /*
     @PostMapping
     public CatalogStoResponseDTO create(
             @RequestAttribute final Authentication authentication,
@@ -40,6 +41,8 @@ public class CatalogStoController {
         final CatalogStoResponseDTO responseDTO = manager.create(authentication, requestDTO);
         return responseDTO;
     }
+    */
+
     @PutMapping
     public CatalogStoResponseDTO update(
             @RequestAttribute final Authentication authentication,

@@ -12,6 +12,6 @@ public class CatalogStoResponseDTO {
     private String address;
     private String operating_mode;
     private String services;
-    private long telephone;
+    private String telephone;
     private String photo;
 }

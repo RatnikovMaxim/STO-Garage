@@ -48,6 +48,7 @@ public class CatalogStoManager {
                 .orElseThrow(CatalogStoNotFoundException::new)
                 ;
     }
+    /*
     public CatalogStoResponseDTO create(final Authentication authentication, final CatalogStoRequestDTO requestDTO) {
     if (!authentication.hasRole(Roles.ROLE_ADMIN)) {
         throw new ForbiddenException();
@@ -67,10 +68,12 @@ public class CatalogStoManager {
                /* Optional.ofNullable(requestDTO. ...())
                         .map(o -> new ...Embeddable(o.get...(), o.get...()))
                         .orElse(null)*/
-        );
+       /* );
         final CatalogStoEntity savedEntity = catalogStoRepository.save(catalogStoEntity);
         return catalogStoEntityToCatalogStoResponseDTO.apply(savedEntity);
+
     }
+    */
     public CatalogStoResponseDTO update(final Authentication authentication, final CatalogStoRequestDTO requestDTO) {
         if (!authentication.hasRole(Roles.ROLE_ADMIN)) {
             throw new ForbiddenException();

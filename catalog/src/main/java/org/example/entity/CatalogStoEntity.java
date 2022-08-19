@@ -26,7 +26,7 @@ public class CatalogStoEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String services;
     @Column(nullable = false, columnDefinition = "TEXT")
-    private long telephone;
+    private String telephone;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String photo;
 
