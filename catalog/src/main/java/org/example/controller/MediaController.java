@@ -14,7 +14,6 @@ import java.io.IOException;
 public class MediaController {
     private MediaManager manager;
 
-
     @RequestMapping("/media/upload-data")
     public MediaUploadResponseDTO uploadBytes(@RequestBody byte[] data) throws IOException {
         return manager.upload(data);
