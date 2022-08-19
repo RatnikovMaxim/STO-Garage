@@ -9,3 +9,11 @@ CREATE TABLE catalogs_sto (
     removed BOOLEAN     NOT NULL DEFAULT FALSE,
     created timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE services (
+    id BIGSERIAL PRIMARY KEY,
+    sto_id BIGINT NOT NULL REFERENCES catalogs_sto,
+    name_service TEXT NOT NULL,
+    created timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
