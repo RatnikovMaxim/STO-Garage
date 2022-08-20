@@ -10,7 +10,7 @@ services:
       - POSTGRES_USER=app
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=db
-    command: ["postgres", "-c", "log_statement=all"]
+    command: [ "postgres", "-c", "log_statement=all" ]
   catalogdb:
     image: postgres:14-alpine
     ports:
@@ -21,7 +21,51 @@ services:
       - POSTGRES_USER=app
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=db
-    command: ["postgres", "-c", "log_statement=all"]
+    command: [ "postgres", "-c", "log_statement=all" ]
+  planerdb:
+    image: postgres:14-alpine
+    ports:
+      - '5403:5432'
+    volumes:
+      - ./planer/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+    environment:
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=db
+    command: [ "postgres", "-c", "log_statement=all" ]
+  ordersdb:
+    image: postgres:14-alpine
+    ports:
+      - '5404:5432'
+    volumes:
+      - ./orders/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+    environment:
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=db
+    command: [ "postgres", "-c", "log_statement=all" ]
+  messagedb:
+    image: postgres:14-alpine
+    ports:
+      - '5405:5432'
+    volumes:
+      - ./message/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+    environment:
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=db
+    command: [ "postgres", "-c", "log_statement=all" ]
+  bonusdb:
+    image: postgres:14-alpine
+    ports:
+      - '5406:5432'
+    volumes:
+      - ./bonus/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+    environment:
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=db
+    command: [ "postgres", "-c", "log_statement=all" ]
   zookeeper:
     image: bitnami/zookeeper
     environment:

@@ -18,7 +18,7 @@
         <module>id</module>
         <module>catalog</module>
         <module>planner</module>
-        <module>order</module>
+        <module>orders</module>
         <module>message</module>
         <module>bonus</module>
         <module>tests</module>
