@@ -6,8 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.ServiceRequestDTO;
 import org.example.dto.ServiceResponseDTO;
 import org.example.entity.ServiceEntity;
-import org.example.entity.StationEntity;
-import org.example.exception.CatalogStoNotFoundException;
+import org.example.exception.ServiceNotFoundException;
 import org.example.exception.ForbiddenException;
 import org.example.repository.ServiceRepository;
 import org.springframework.stereotype.Component;
@@ -39,7 +38,7 @@ public class ServiceManager {
     public ServiceResponseDTO getById(Authentication authentication, long id) {
         return serviceRepository.findById(id)
                 .map(serviceEntityServiceResponseDTOFunction)
-                .orElseThrow(CatalogStoNotFoundException::new)
+                .orElseThrow(ServiceNotFoundException::new)
                 ;
     }
 

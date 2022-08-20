@@ -1,4 +1,4 @@
-package com.example.filter;
+package org.example.filter;
 
 import com.example.id.dto.VerificationRequestDTO;
 import com.example.id.dto.VerificationResponseDTO;

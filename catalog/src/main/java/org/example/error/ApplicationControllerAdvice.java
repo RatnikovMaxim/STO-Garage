@@ -2,7 +2,7 @@ package org.example.error;
 
 
 import com.example.id.exception.ForbiddenException;
-import org.example.exception.CatalogStoNotFoundException;
+import org.example.exception.ServiceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,7 +24,7 @@ public class ApplicationControllerAdvice {
     }
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponseDTO handle(final CatalogStoNotFoundException e) {
+    public ErrorResponseDTO handle(final ServiceNotFoundException e) {
         return new ErrorResponseDTO(ErrorResponseDTO.THE_SERVER_CANNOT_FIND_THE_DATA);
     }
 }
