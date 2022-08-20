@@ -9,6 +9,10 @@ Content-Type: application/json
 
 > {% client.global.set("token", response.body.token); %}
 
-### music.test
-GET http://localhost:8002/
+### stations
+GET http://localhost:8002/stations
 X-Token: {{token}}
+
+
+
+
