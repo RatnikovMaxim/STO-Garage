@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.example.id.security.Roles.ROLE_SERVICE;
+
 @Component
 @Transactional
 @RequiredArgsConstructor
@@ -43,7 +45,7 @@ public class ServiceManager {
     }
 
     public ServiceResponseDTO create(final Authentication authentication, final ServiceRequestDTO requestDTO) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN)&&authentication.hasRole(ROLE_SERVICE)) {
             throw new ForbiddenException();
         }
 
@@ -57,17 +59,16 @@ public class ServiceManager {
     }
 
     public ServiceResponseDTO update(final Authentication authentication, final ServiceRequestDTO requestDTO) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN)&&authentication.hasRole(ROLE_SERVICE)) {
             throw new ForbiddenException();
         }
-
         final ServiceEntity serviceEntity = serviceRepository.getReferenceById(requestDTO.getId());
         serviceEntity.setName(requestDTO.getName());
         return serviceEntityServiceResponseDTOFunction.apply(serviceEntity);
     }
 
     public void deleteById(final Authentication authentication, final long id) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN)&&authentication.hasRole(ROLE_SERVICE)) {
             throw new ForbiddenException();
         }
         serviceRepository.deleteById(id);

@@ -12,16 +12,56 @@ Content-Type: application/json
 
 
 
-### services
+### services.getAll
 GET http://localhost:8002/services
 X-Token: {{token}}
 
-### stations
+### stations.getAll
 GET http://localhost:8002/stations
 X-Token: {{token}}
 
-### stations
+### stations.getById
 GET http://localhost:8002/stations/1
 X-Token: {{token}}
 
+### stations.getById
+GET http://localhost:8002/services/1
+X-Token: {{token}}
+
+### stations.create
+POST http://localhost:8002/srvices
+X-Login: vasya
+X-Password: password
+Content-Type: application/json
+
+{
+  "id": 0,
+  "name": "Название сервиса",
+  "services": "CTO",
+  "roles": ["ROLE_ADMIN","ROLE_SERVICE"]
+
+}
+
+### stations.update
+POST http://localhost:8002/station
+X-Login: vasya
+X-Password: password
+Content-Type: application/json
+
+{
+  "id": 0,
+  "name": "Название сервиса(update)",
+  "services": "CTOu",
+  "roles": ["ROLE_ADMIN","ROLE_SERVICE"]
+}
+
+### posts.deleteById
+DELETE http://localhost:8002/services/1
+X-Login: vasya
+X-Password: password
+
+### posts.deleteById
+DELETE http://localhost:8002/station/1
+X-Login: vasya
+X-Password: password
 

@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.example.id.security.Roles.ROLE_SERVICE;
+
 @Component
 @Transactional
 @RequiredArgsConstructor
@@ -50,7 +52,7 @@ public class StationManager {
     }
 
     public StationResponseDTO create(final Authentication authentication, final StationRequestDTO requestDTO) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN)&&authentication.hasRole(ROLE_SERVICE)) {
             throw new ForbiddenException();
         }
 
@@ -67,7 +69,7 @@ public class StationManager {
     }
 
     public StationResponseDTO update(final Authentication authentication, final StationRequestDTO requestDTO) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN)&&authentication.hasRole(ROLE_SERVICE)) {
             throw new ForbiddenException();
         }
 
@@ -81,7 +83,7 @@ public class StationManager {
     }
 
     public void deleteById(final Authentication authentication, final long id) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN)&&authentication.hasRole(ROLE_SERVICE)) {
             throw new ForbiddenException();
         }
         stationRepository.deleteById(id);
