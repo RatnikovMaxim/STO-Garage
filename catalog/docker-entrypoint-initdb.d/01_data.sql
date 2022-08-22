@@ -5,6 +5,7 @@ VALUES ('Автосеть Гараж'),
        ('Причал'),
        ('CarService');
 
+
 INSERT INTO services(station_id, name)
 VALUES (1,'Шиномонтаж'),
        (2, 'Техцентр'),

@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @NoArgsConstructor
@@ -18,5 +16,7 @@ public class StationRequestDTO {
     @NotBlank
     @Size(min = 3, max = 100)
     private String name;
-    private List<Long> serviceIds;
+    @NotNull
+    @Size(min = 1)
+    private List<@NotNull @Pattern(regexp = "[0-9]") Long> serviceIds;
 }

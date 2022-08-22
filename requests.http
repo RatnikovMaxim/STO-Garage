@@ -9,7 +9,14 @@ Content-Type: application/json
 
 > {% client.global.set("token", response.body.token); %}
 
+### auth.verify
+POST http://localhost:8001/auth/verify
+X-Token: {{token}}
+Content-Type: application/json
 
+{
+  "token": "{{token}}"
+}
 
 
 ### services.getAll
@@ -29,7 +36,33 @@ GET http://localhost:8002/services/1
 X-Token: {{token}}
 
 ### stations.create
-POST http://localhost:8002/srvices
+POST http://localhost:8002/services
+X-Login: vasya
+X-Password: password
+Content-Type: application/json
+
+{
+  "id": 6,
+  "name": "Вид работ"
+}
+
+### stations.create
+POST http://localhost:8002/stations
+X-Login: vasya
+X-Password: password
+Content-Type: application/json
+
+{
+  "id": 7,
+  "name": "Название сервиса",
+  "services": {
+    "station_id": 0,
+    "service_id": 0
+   }
+}
+
+### stations.update
+PUT http://localhost:8002/stations
 X-Login: vasya
 X-Password: password
 Content-Type: application/json
@@ -37,31 +70,20 @@ Content-Type: application/json
 {
   "id": 0,
   "name": "Название сервиса",
-  "services": "CTO",
-  "roles": ["ROLE_ADMIN","ROLE_SERVICE"]
-
+  "servicesIds": {
+    "id": 0,
+    "name": "gwgtu"
+  }
 }
 
-### stations.update
-POST http://localhost:8002/station
-X-Login: vasya
-X-Password: password
-Content-Type: application/json
-
-{
-  "id": 0,
-  "name": "Название сервиса(update)",
-  "services": "CTOu",
-  "roles": ["ROLE_ADMIN","ROLE_SERVICE"]
-}
-
-### posts.deleteById
+### ervices.deleteById
 DELETE http://localhost:8002/services/1
 X-Login: vasya
 X-Password: password
 
-### posts.deleteById
-DELETE http://localhost:8002/station/1
+### stations.deleteById
+DELETE http://localhost:8002/stations/1
 X-Login: vasya
 X-Password: password
+
 
