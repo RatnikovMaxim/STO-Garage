@@ -37,13 +37,11 @@ X-Token: {{token}}
 
 ### stations.create
 POST http://localhost:8002/services
-X-Login: vasya
-X-Password: password
+X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "id": 6,
-  "name": "Вид работ"
+  "name": "Вид работ 3"
 }
 
 ### stations.create
@@ -53,12 +51,8 @@ X-Password: password
 Content-Type: application/json
 
 {
-  "id": 7,
-  "name": "Название сервиса",
-  "services": {
-    "station_id": 0,
-    "service_id": 0
-   }
+  "name": "Название сервиса 4",
+  "serviceIds": [1, 2, 3]
 }
 
 ### stations.update
@@ -85,5 +79,4 @@ X-Password: password
 DELETE http://localhost:8002/stations/1
 X-Login: vasya
 X-Password: password
-
 

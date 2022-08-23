@@ -18,5 +18,5 @@ public class StationRequestDTO {
     private String name;
     @NotNull
     @Size(min = 1)
-    private List<@NotNull @Pattern(regexp = "[0-9]") Long> serviceIds;
+    private List<@NotNull Long> serviceIds;
 }
