@@ -1,8 +1,9 @@
 package org.example.filter;
 
 import com.example.id.dto.VerificationRequestDTO;
-import com.example.id.dto.VerificationResponseDTO;
 import com.example.id.security.Authentication;
+import org.example.dto.VerificationResponseDTO;
+//import org.example.dto.VerificationRequestDTO;
 import lombok.extern.slf4j.Slf4j;
 
 import org.example.client.IdServiceClient;
@@ -19,7 +20,6 @@ import java.io.IOException;
 @Component
 @Slf4j
 public class AuthFilter extends HttpFilter {
-    //   private final AuthManager authManager;
     private final IdServiceClient idServiceClient;
     private final String appToken;
 

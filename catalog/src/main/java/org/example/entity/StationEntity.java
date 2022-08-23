@@ -1,9 +1,6 @@
 package org.example.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -25,7 +22,6 @@ public class StationEntity {
             joinColumns =
             @JoinColumn(name = "station_id", referencedColumnName = "id"),
             inverseJoinColumns =
-            @JoinColumn(name = "service_id", referencedColumnName = "id")
-    )
+            @JoinColumn(name = "service_id", referencedColumnName = "id"))
     private List<ServiceEntity> services;
 }

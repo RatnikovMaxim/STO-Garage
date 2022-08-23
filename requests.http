@@ -46,8 +46,7 @@ Content-Type: application/json
 
 ### stations.create
 POST http://localhost:8002/stations
-X-Login: vasya
-X-Password: password
+X-Token: {{token}}
 Content-Type: application/json
 
 {
@@ -56,27 +55,19 @@ Content-Type: application/json
 }
 
 ### stations.update
-PUT http://localhost:8002/stations
-X-Login: vasya
-X-Password: password
+PUT http://localhost:8002/stations/1
+X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "id": 0,
   "name": "Название сервиса",
-  "servicesIds": {
-    "id": 0,
-    "name": "gwgtu"
-  }
+  "servicesIds": [5, 2, 3]
 }
 
 ### ervices.deleteById
 DELETE http://localhost:8002/services/1
-X-Login: vasya
-X-Password: password
+X-Token: {{token}}
 
 ### stations.deleteById
 DELETE http://localhost:8002/stations/1
-X-Login: vasya
-X-Password: password
-
+X-Token: {{token}}
