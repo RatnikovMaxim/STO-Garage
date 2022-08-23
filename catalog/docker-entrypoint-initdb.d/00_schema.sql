@@ -7,7 +7,6 @@ CREATE TABLE stations (
 
 CREATE TABLE services (
     id BIGSERIAL PRIMARY KEY,
-    station_id BIGINT NOT NULL REFERENCES stations,
     name TEXT NOT NULL,
     created timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -17,5 +16,4 @@ CREATE TABLE station_services (
     station_id BIGINT NOT NULL REFERENCES stations,
     service_id BIGINT NOT NULL REFERENCES services,
     created timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
-
-)
+);
