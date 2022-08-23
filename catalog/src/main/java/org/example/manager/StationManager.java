@@ -2,12 +2,12 @@ package org.example.manager;
 
 import com.example.id.security.Authentication;
 import com.example.id.security.Roles;
+//import org.example.security.Roles;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.StationRequestDTO;
 import org.example.dto.StationResponseDTO;
 import org.example.entity.ServiceEntity;
 import org.example.entity.StationEntity;
-import org.example.exception.ServiceNotFoundException;
 import org.example.exception.ForbiddenException;
 import org.example.exception.StationNotFoundException;
 import org.example.repository.ServiceRepository;
@@ -55,8 +55,7 @@ public class StationManager {
         if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_SERVICE)) {
             throw new ForbiddenException();
         }
-
-        final List<ServiceEntity> servicesEntities = serviceRepository.findAllById(requestDTO.getServiceIds());
+        final List<ServiceEntity> servicesEntities = serviceRepository.findAllByIdIn(requestDTO.getServiceIds());
 
         final StationEntity stationEntity = new StationEntity(
                 0,

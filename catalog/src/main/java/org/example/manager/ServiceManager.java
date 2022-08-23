@@ -48,7 +48,6 @@ public class ServiceManager {
         if (!authentication.hasRole(Roles.ROLE_ADMIN)&&authentication.hasRole(ROLE_SERVICE)) {
             throw new ForbiddenException();
         }
-
         final ServiceEntity serviceEntity = new ServiceEntity(
                 0,
                 requestDTO.getName()
