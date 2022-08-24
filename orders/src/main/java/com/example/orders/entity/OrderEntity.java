@@ -21,9 +21,9 @@ public class OrderEntity {
     private long id;
     @ElementCollection
     @CollectionTable(name = "users", joinColumns = @JoinColumn(name = "user_id"))
-    private List<long> ownerId;
-    private List<long> stoId;
-    private List<long> serviceId;
+    private long ownerId;
+    private long stationId;
+    private List<long> serviceIds;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String status;
 }
