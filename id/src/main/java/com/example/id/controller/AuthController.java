@@ -1,6 +1,9 @@
 package com.example.id.controller;
 
-import com.example.id.dto.*;
+import com.example.id.dto.AuthRequestDTO;
+import com.example.id.dto.AuthResponseDTO;
+import com.example.id.dto.VerificationRequestDTO;
+import com.example.id.dto.VerificationResponseDTO;
 import com.example.id.manager.AuthManager;
 import com.example.id.security.Authentication;
 import lombok.RequiredArgsConstructor;
