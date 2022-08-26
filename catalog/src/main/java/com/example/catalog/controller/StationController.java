@@ -49,7 +49,7 @@ public class StationController {
         final StationResponseDTO responseDTO = manager.update(authentication, requestDTO);
         return responseDTO;
     }
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public void deleteById(
             @RequestAttribute final Authentication authentication,
             @Min(1) @PathVariable final long id

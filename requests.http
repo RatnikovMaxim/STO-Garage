@@ -55,19 +55,19 @@ Content-Type: application/json
 }
 
 ### stations.update
-PUT http://localhost:8002/stations/1
+PUT http://localhost:8002/stations
 X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "name": "Название сервиса",
+  "name": "Название сервиса UPDATE",
   "servicesIds": [5, 2, 3]
 }
 
-### ervices.deleteById
-DELETE http://localhost:8002/services/1
+### services.deleteById
+DELETE http://localhost:8002/services/4
 X-Token: {{token}}
 
 ### stations.deleteById
-DELETE http://localhost:8002/stations/1
+DELETE http://localhost:8002/stations/2
 X-Token: {{token}}
