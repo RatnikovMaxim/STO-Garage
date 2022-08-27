@@ -18,4 +18,4 @@ CREATE TABLE station_services
     id         BIGSERIAL PRIMARY KEY,
     station_id BIGINT NOT NULL REFERENCES stations,
     service_id BIGINT NOT NULL REFERENCES services
-)
+);

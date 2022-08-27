@@ -56,6 +56,15 @@ public class OrderController {
         return manager.addPositionForId(authentication, id, requestDTO);
     }
 
+    @DeleteMapping("/{id}/positions/{positionId}")
+    public OrderResponseDTO addPosition(
+            @RequestAttribute final Authentication authentication,
+            @Min(1) @PathVariable final long id,
+            @Min(1) @PathVariable final long positionId
+    ) {
+        return manager.removePositionForId(authentication, id, positionId);
+    }
+
     @PutMapping("/{id}")
     public OrderResponseDTO finishById(
             @RequestAttribute final Authentication authentication,

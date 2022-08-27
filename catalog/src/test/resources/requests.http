@@ -18,7 +18,9 @@ Content-Type: application/json
   "token": "{{token}}"
 }
 
-
+### search
+GET http://localhost:8002/stations_search?query=Авто&language=russian
+X-Token: {{token}}
 
 ### services.getAll
 GET http://localhost:8002/services
@@ -56,69 +58,20 @@ Content-Type: application/json
 }
 
 ### stations.update
-PUT http://localhost:8002/stations/1
+PUT http://localhost:8002/stations
 X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "name": "Название сервиса",
-  "servicesIds": [5, 2, 3]
+  "id": 5,
+  "name": "Название сервиса UPDATE",
+  "serviceIds": [5, 2, 3]
 }
 
 ### services.deleteById
-DELETE http://localhost:8002/services/1
+DELETE http://localhost:8002/services/4
 X-Token: {{token}}
 
 ### stations.deleteById
-DELETE http://localhost:8002/stations/1
-X-Token: {{token}}
-
-
-
-### orders.getAll
-GET http://localhost:8004/orders?stationId=2&start=1661574887&finish=1661593085
-X-Token: {{token}}
-
-### orders.getById
-GET http://localhost:8004/orders/1
-X-Token: {{token}}
-
-### orders.create
-POST http://localhost:8004/orders
-X-Token: {{token}}
-Content-Type: application/json
-
-{
-  "id": 0,
-  "user": {
-    "id": 1,
-    "name": "Vasya"
-  },
-  "station": {
-    "id": 1,
-    "name": "Автосеть гараж"
-  },
-  "serviceIds": [1, 2],
-  "status": "забронирован"
-}
-
-### orders.addPosition
-
-POST http://localhost:8004/orders/1/positions
-X-Token: {{token}}
-Content-Type: application/json
-
-{
-  "id": 0,
-  "serviceId": 1,
-  "price": 40000
-}
-
-### orders.removePosition
-
-DELETE http://localhost:8004/orders/1/positions/3
-X-Token: {{token}}
-
-### orders.finishByid
-PUT http://localhost:8004/orders/1
+DELETE http://localhost:8002/stations/2
 X-Token: {{token}}

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "catalog")
 public interface CatalogServiceClient {
-    @GetMapping("/{id}")
+    @GetMapping("/stations/{id}")
     StationResponseDTO getStationById(
             @RequestHeader("X-Token") String serviceToken,
             @PathVariable long id

@@ -100,7 +100,7 @@ public class OrderManager {
     }
 
     public OrderResponseDTO create(final Authentication authentication, final OrderRequestDTO requestDTO) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_SERVICE)) {
+        if (authentication.hasRole(ROLE_SERVICE)) {
             throw new ForbiddenException();
         }
 
@@ -131,7 +131,6 @@ public class OrderManager {
                 orderEntity
         );
         OrderPositionEntity savedEntity = orderPositionRepository.save(orderPositionEntity); // CASCADE
-        orderEntity.getPositions().add(savedEntity);
         return orderEntityToOrderResponseDTO.apply(orderEntity);
     }
 
@@ -145,6 +144,8 @@ public class OrderManager {
         }
 
         orderPositionRepository.delete(orderPositionEntity);
+        orderEntity.getPositions().remove(orderPositionEntity);
+
         return orderEntityToOrderResponseDTO.apply(orderEntity);
     }
 
