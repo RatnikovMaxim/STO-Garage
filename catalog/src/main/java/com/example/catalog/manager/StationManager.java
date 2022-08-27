@@ -52,7 +52,7 @@ public class StationManager {
     }
 
     public StationResponseDTO create(final Authentication authentication, final StationRequestDTO requestDTO) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_SERVICE)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_SERVICE)){
             throw new ForbiddenException();
         }
         final List<ServiceEntity> servicesEntities = serviceRepository.findAllByIdIn(requestDTO.getServiceIds());
@@ -72,7 +72,7 @@ public class StationManager {
             throw new ForbiddenException();
         }
 
-        final List<ServiceEntity> servicesEntities = serviceRepository.findAllById(requestDTO.getServiceIds());
+        final List<ServiceEntity> servicesEntities = serviceRepository.findAllByIdIn(requestDTO.getServiceIds());
 
         final StationEntity stationEntity = stationRepository.getReferenceById(requestDTO.getId());
         stationEntity.setName(requestDTO.getName());

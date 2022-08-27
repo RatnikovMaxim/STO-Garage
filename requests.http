@@ -60,8 +60,9 @@ X-Token: {{token}}
 Content-Type: application/json
 
 {
+  "id": 5,
   "name": "Название сервиса UPDATE",
-  "servicesIds": [5, 2, 3]
+  "serviceIds": [5, 2, 3]
 }
 
 ### services.deleteById
