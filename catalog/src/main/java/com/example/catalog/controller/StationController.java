@@ -56,5 +56,4 @@ public class StationController {
     ) {
         manager.deleteById(authentication, id);
     }
-
 }
