@@ -17,3 +17,108 @@ Content-Type: application/json
 {
   "token": "{{token}}"
 }
+
+
+
+### services.getAll
+GET http://localhost:8002/services
+X-Token: {{token}}
+
+### stations.getAll
+GET http://localhost:8002/stations
+X-Token: {{token}}
+
+### stations.getById
+GET http://localhost:8002/stations/1
+X-Token: {{token}}
+
+### stations.getById
+GET http://localhost:8002/services/1
+X-Token: {{token}}
+
+### stations.create
+POST http://localhost:8002/services
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "name": "Вид работ 3"
+}
+
+### stations.create
+POST http://localhost:8002/stations
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "name": "Название сервиса 4",
+  "serviceIds": [1, 2, 3]
+}
+
+### stations.update
+PUT http://localhost:8002/stations/1
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "name": "Название сервиса",
+  "servicesIds": [5, 2, 3]
+}
+
+### services.deleteById
+DELETE http://localhost:8002/services/1
+X-Token: {{token}}
+
+### stations.deleteById
+DELETE http://localhost:8002/stations/1
+X-Token: {{token}}
+
+
+
+### orders.getAll
+GET http://localhost:8004/orders?stationId=2&start=1661574887&finish=1661593085
+X-Token: {{token}}
+
+### orders.getById
+GET http://localhost:8004/orders/1
+X-Token: {{token}}
+
+### orders.create
+POST http://localhost:8004/orders
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "user": {
+    "id": 1,
+    "name": "Vasya"
+  },
+  "station": {
+    "id": 1,
+    "name": "Автосеть гараж"
+  },
+  "serviceIds": [1, 2],
+  "status": "забронирован"
+}
+
+### orders.addPosition
+
+POST http://localhost:8004/orders/1/positions
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "serviceId": 1,
+  "price": 40000
+}
+
+### orders.removePosition
+
+DELETE http://localhost:8004/orders/1/positions/3
+X-Token: {{token}}
+
+### orders.finishByid
+PUT http://localhost:8004/orders/1
+X-Token: {{token}}
