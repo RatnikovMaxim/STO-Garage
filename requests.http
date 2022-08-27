@@ -19,6 +19,37 @@ Content-Type: application/json
 }
 
 
+### orders.getAll
+GET http://localhost:8004/orders?stationId=2&start=1661574887&finish=1661593085
+X-Token: {{token}}
+
+### orders.getById
+GET http://localhost:8004/orders/1
+X-Token: {{token}}
+
+### orders.create
+POST http://localhost:8004/orders
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "user": {
+    "id": 1,
+    "name": "Vasya"
+  },
+  "station": {
+    "id": 1,
+    "name": "Автосеть гараж"
+  },
+  "serviceIds": [1, 3],
+  "status": "забронирован"
+}
+
+### orders.finishByid
+PUT http://localhost:8004/orders/1
+X-Token: {{token}}
+
 ### services.getAll
 GET http://localhost:8002/services
 X-Token: {{token}}
