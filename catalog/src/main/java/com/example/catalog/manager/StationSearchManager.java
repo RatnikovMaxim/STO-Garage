@@ -22,10 +22,6 @@ public class StationSearchManager {
     private final Function<StationEntity, StationSearchResponseDTO> stationEntityStationSearchResponseDTOFunction = entity -> new StationSearchResponseDTO(
             entity.getId(),
             entity.getName()
-            //entity.getServices().stream().map(o -> new StationSearchResponseDTO.(
-               //     o.getId(),
-                //    o.getName())).collect(Collectors.toList())
-
     );
     public List<StationSearchResponseDTO> search(String query, String language) {
         return stationRepository.search(query,language).stream()

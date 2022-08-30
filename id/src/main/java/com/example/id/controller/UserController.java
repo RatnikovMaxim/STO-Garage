@@ -14,7 +14,7 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequiredArgsConstructor // генерирует конструктор только для final non-static полей
+@RequiredArgsConstructor
 public class UserController {
     private final UserManager manager;
 
@@ -26,8 +26,6 @@ public class UserController {
         return responseDTO;
     }
 
-    // TODO: http://localhost:8080/users/1
-    // ConstraintViolationException
     @GetMapping("/users/{id}")
     public UserResponseDTO getById(
             @RequestAttribute final Authentication authentication,

@@ -22,13 +22,14 @@ Content-Type: application/json
 GET http://localhost:8002/stations_search?query=Авто&language=russian
 X-Token: {{token}}
 
+### stations.getAll
+GET http://localhost:8002/stations
+X-Token: {{token}}
+
 ### services.getAll
 GET http://localhost:8002/services
 X-Token: {{token}}
 
-### stations.getAll
-GET http://localhost:8002/stations
-X-Token: {{token}}
 
 ### stations.getById
 GET http://localhost:8002/stations/1

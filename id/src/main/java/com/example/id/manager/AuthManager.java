@@ -36,7 +36,6 @@ public class AuthManager {
     private final TokenGenerator tokenGenerator;
 
     public AuthResponseDTO auth(final Authentication authentication, final AuthRequestDTO requestDTO) {
-        // TODO: ROLE_ANONYMOUS
 
         final UserEntity userEntity = userRepository.findByLogin(requestDTO.getLogin())
                 .orElseThrow(UserLoginNotFoundException::new);

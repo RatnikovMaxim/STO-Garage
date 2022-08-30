@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class UserManager {
-    private final UserRepository userRepository; // мне через DI подставят нужный интерфейс
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final Function<UserEntity, UserResponseDTO> userEntityToUserResponseDTO = userEntity -> new UserResponseDTO(
             userEntity.getId(),
@@ -31,7 +31,7 @@ public class UserManager {
 
     public List<UserResponseDTO> getAll(final Authentication authentication) {
         if (!authentication.hasRole(Roles.ROLE_ADMIN)) {
-            throw new ForbiddenException(); // 403 @ResponseStatus
+            throw new ForbiddenException();
         }
 
         return userRepository.findAll().stream()
@@ -42,26 +42,20 @@ public class UserManager {
 
     public UserResponseDTO getById(final Authentication authentication, final long id) {
         if (!authentication.hasRole(Roles.ROLE_ADMIN)) {
-            throw new ForbiddenException(); // 403 @ResponseStatus
+            throw new ForbiddenException();
         }
 
         return userRepository.findById(id)
-                // map срабатывает только тогда, когда внутри есть объект
                 .map(userEntityToUserResponseDTO)
-                .orElseThrow(UserNotFoundException::new) // () -> new UserNotFoundException <-> UserNotFoundException::new
+                .orElseThrow(UserNotFoundException::new)
                 ;
     }
 
     public UserResponseDTO create(final Authentication authentication, final UserRequestDTO requestDTO) {
         if (!authentication.hasRole(Roles.ROLE_ADMIN)) {
-            throw new ForbiddenException(); // 403 @ResponseStatus
+            throw new ForbiddenException();
         }
-        // TODO: check login
 
-        // TODO:
-        //  +1. Создаём entity на базе DTO
-        //  +2. Вызываем save
-        //  3. Превращаем entity в DTO
         final UserEntity userEntity = new UserEntity(
                 0,
                 requestDTO.getLogin(),
@@ -74,16 +68,12 @@ public class UserManager {
 
     public UserResponseDTO update(final Authentication authentication, final UserRequestDTO requestDTO) {
         if (!authentication.hasRole(Roles.ROLE_ADMIN)) {
-            throw new ForbiddenException(); // 403 @ResponseStatus
+            throw new ForbiddenException();
         }
 
-        // TODO:
-        //  1. JPA нет UPDATE -> getReferenceById + setPassword/setLogin
-        //  2. JPQL
         final UserEntity userEntity = userRepository.getReferenceById(requestDTO.getId());
         userEntity.setLogin(requestDTO.getLogin());
         userEntity.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
-        // TODO: после изменения create всегда смотрите на update
         userEntity.setRoles(requestDTO.getRoles());
 
         return userEntityToUserResponseDTO.apply(userEntity);
@@ -91,7 +81,7 @@ public class UserManager {
 
     public void deleteById(final Authentication authentication, final long id) {
         if (!authentication.hasRole(Roles.ROLE_ADMIN)) {
-            throw new ForbiddenException(); // 403 @ResponseStatus
+            throw new ForbiddenException();
         }
 
         userRepository.deleteById(id);

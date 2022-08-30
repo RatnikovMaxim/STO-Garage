@@ -52,7 +52,7 @@ public class StationManager {
     }
 
     public StationResponseDTO create(final Authentication authentication, final StationRequestDTO requestDTO) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_SERVICE)){
+        if (!authentication.hasRole(Roles.ROLE_ADMIN) || authentication.hasRole(ROLE_SERVICE)){
             throw new ForbiddenException();
         }
         final List<ServiceEntity> servicesEntities = serviceRepository.findAllByIdIn(requestDTO.getServiceIds());
@@ -68,7 +68,7 @@ public class StationManager {
     }
 
     public StationResponseDTO update(final Authentication authentication, final StationRequestDTO requestDTO) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_SERVICE)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN) || authentication.hasRole(ROLE_SERVICE)) {
             throw new ForbiddenException();
         }
 
@@ -82,7 +82,7 @@ public class StationManager {
     }
 
     public void deleteById(final Authentication authentication, final long id) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_SERVICE)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN) || authentication.hasRole(ROLE_SERVICE)) {
             throw new ForbiddenException();
         }
         stationRepository.deleteById(id);
