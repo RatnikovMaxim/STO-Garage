@@ -7,14 +7,16 @@ INSERT INTO user_roles(user_id, role)
 SELECT id, 'ROLE_USER'
 FROM users
 WHERE login = 'vasya';
+
 INSERT INTO user_roles(user_id, role)
 SELECT id, 'ROLE_ADMIN'
 FROM users
 WHERE login = 'vasya';
+
 INSERT INTO user_roles(user_id, role)
-SELECT id, 'ROLE_SERVICE'
+SELECT id, 'ROLE_ORDER'
 FROM users
-WHERE login = 'posts-service';
+WHERE login = 'vasya';
 -- INSERT INTO user_roles(user_id, role) VALUES(1, 'ROLE_ADMIN';
 
 INSERT INTO tokens(token, user_id, expire)
@@ -23,4 +25,4 @@ SELECT
     id,
     CURRENT_TIMESTAMP + interval '1 year'
 FROM users
-WHERE login = 'posts-service';
+WHERE login = 'vasya';

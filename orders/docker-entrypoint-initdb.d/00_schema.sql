@@ -19,14 +19,6 @@ CREATE TABLE order_positions
     price        BIGINT NOT NULL DEFAULT 0
 );
 
--- CREATE TABLE order_services
--- (
---     id            BIGSERIAL PRIMARY KEY,
---     order_number  BIGINT      NOT NULL REFERENCES orders,
---     service_id    BIGINT      NOT NUll /*из services*/,
---     created timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
--- );
-
 CREATE TABLE history
 (
     id            BIGSERIAL PRIMARY KEY,

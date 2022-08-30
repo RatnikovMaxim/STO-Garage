@@ -1,3 +1,6 @@
+
+===ID===
+
 ### id.auth
 POST http://localhost:8001/auth
 Content-Type: application/json
@@ -18,7 +21,7 @@ Content-Type: application/json
   "token": "{{token}}"
 }
 
-
+===CATALOG===
 
 ### services.getAll
 GET http://localhost:8002/services
@@ -32,11 +35,11 @@ X-Token: {{token}}
 GET http://localhost:8002/stations/1
 X-Token: {{token}}
 
-### stations.getById
+### services.getById
 GET http://localhost:8002/services/1
 X-Token: {{token}}
 
-### stations.create
+### services.create
 POST http://localhost:8002/services
 X-Token: {{token}}
 Content-Type: application/json
@@ -56,13 +59,13 @@ Content-Type: application/json
 }
 
 ### stations.update
-PUT http://localhost:8002/stations/1
+PUT http://localhost:8002/stations/6
 X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "name": "Название сервиса",
-  "servicesIds": [5, 2, 3]
+  "name": "Название СТО",
+  "serviceSIds": [5, 2, 3]
 }
 
 ### services.deleteById
@@ -74,13 +77,19 @@ DELETE http://localhost:8002/stations/1
 X-Token: {{token}}
 
 
+===PLANNER===
 
-### orders.getAll
-GET http://localhost:8004/orders?stationId=2&start=1661574887&finish=1661593085
+
+
+===ORDERS===
+
+
+### orders.getAll конкретной СТО
+GET http://localhost:8004/orders?stationId=2&start=1661806800&finish=1665863343
 X-Token: {{token}}
 
 ### orders.getById
-GET http://localhost:8004/orders/1
+GET http://localhost:8004/orders/2
 X-Token: {{token}}
 
 ### orders.create
@@ -96,14 +105,13 @@ Content-Type: application/json
   },
   "station": {
     "id": 1,
-    "name": "Автосеть гараж"
+    "name": "гараж"
   },
   "serviceIds": [1, 2],
-  "status": "забронирован"
+  "status": "заброннирован"
 }
 
 ### orders.addPosition
-
 POST http://localhost:8004/orders/1/positions
 X-Token: {{token}}
 Content-Type: application/json
@@ -116,9 +124,13 @@ Content-Type: application/json
 
 ### orders.removePosition
 
-DELETE http://localhost:8004/orders/1/positions/3
+DELETE http://localhost:8004/orders/1/positions/1
 X-Token: {{token}}
 
 ### orders.finishByid
 PUT http://localhost:8004/orders/1
+X-Token: {{token}}
+
+### orders.deleteById
+DELETE http://localhost:8004/orders/1
 X-Token: {{token}}

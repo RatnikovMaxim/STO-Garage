@@ -11,6 +11,8 @@ import javax.validation.constraints.Min;
 public class OrderPositionRequestDTO {
     @Min(0)
     private long id;
+    @Min(0)
     private long serviceId;
+    @Min(0)
     private long price;
 }
