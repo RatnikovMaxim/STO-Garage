@@ -16,14 +16,14 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.example.id.security.Roles.ROLE_SERVICE;
+import static com.example.id.security.Roles.ROLE_CATALOG;
+
 
 @Component
 @Transactional
 @RequiredArgsConstructor
 public class ServiceManager {
     private final ServiceRepository serviceRepository;
-
 
     private final Function<ServiceEntity, ServiceResponseDTO> serviceEntityServiceResponseDTOFunction = entity -> new ServiceResponseDTO(
             entity.getId(),
@@ -45,7 +45,7 @@ public class ServiceManager {
     }
 
     public ServiceResponseDTO create(final Authentication authentication, final ServiceRequestDTO requestDTO) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) || authentication.hasRole(ROLE_SERVICE)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN) || authentication.hasRole(ROLE_CATALOG)) {
             throw new ForbiddenException();
         }
         final ServiceEntity serviceEntity = new ServiceEntity(
@@ -58,7 +58,7 @@ public class ServiceManager {
     }
 
     public ServiceResponseDTO update(final Authentication authentication, final ServiceRequestDTO requestDTO) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) || authentication.hasRole(ROLE_SERVICE)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN) || authentication.hasRole(ROLE_CATALOG)) {
             throw new ForbiddenException();
         }
         final ServiceEntity serviceEntity = serviceRepository.getReferenceById(requestDTO.getId());
@@ -67,7 +67,7 @@ public class ServiceManager {
     }
 
     public void deleteById(final Authentication authentication, final long id) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) || authentication.hasRole(ROLE_SERVICE)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN) || authentication.hasRole(ROLE_CATALOG)) {
             throw new ForbiddenException();
         }
         serviceRepository.deleteById(id);
