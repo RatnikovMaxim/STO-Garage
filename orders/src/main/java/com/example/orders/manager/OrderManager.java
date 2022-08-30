@@ -2,7 +2,8 @@ package com.example.orders.manager;
 
 import com.example.id.security.Roles;
 
-import static com.example.id.security.Roles.ROLE_SERVICE;
+import static com.example.id.security.Roles.ROLE_USER;
+import static com.example.id.security.Roles.ROLE_ORDER;
 
 import com.example.orders.client.CatalogServiceClient;
 import com.example.orders.dto.OrderPositionRequestDTO;
@@ -81,7 +82,9 @@ public class OrderManager {
             final Authentication authentication,
             final long stationId, final long start, final long finish) {
         // TODO: check stationId: authentication.ROLE = ROLE_ORDER && authentication.stationId == stationId
-
+        if (!authentication.hasRole(Roles.ROLE_ORDER) && authentication.hasRole(ROLE_USER)) {
+            throw new ForbiddenException();
+        }
         return orderRepository.findAllByStationIdAndCreatedBetween(
                         stationId, Instant.ofEpochSecond(start), Instant.ofEpochSecond(finish)
                 ).stream()
@@ -90,7 +93,7 @@ public class OrderManager {
     }
 
     public OrderResponseDTO getById(final Authentication authentication, long id) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_SERVICE)) {
+        if (!authentication.hasRole(Roles.ROLE_ORDER) && authentication.hasRole(ROLE_USER)) {
             throw new ForbiddenException();
         }
         return orderRepository.findById(id)
@@ -100,7 +103,7 @@ public class OrderManager {
     }
 
     public OrderResponseDTO create(final Authentication authentication, final OrderRequestDTO requestDTO) {
-        if (authentication.hasRole(ROLE_SERVICE)) {
+        if (!authentication.hasRole(Roles.ROLE_ORDER)) {
             throw new ForbiddenException();
         }
 
@@ -117,6 +120,9 @@ public class OrderManager {
     }
 
     public OrderResponseDTO addPositionForId(final Authentication authentication, final long id, final OrderPositionRequestDTO requestDTO) {
+        if (!authentication.hasRole(Roles.ROLE_ORDER)) {
+            throw new ForbiddenException();
+        }
         OrderEntity orderEntity = orderRepository.getReferenceById(id);
         final StationResponseDTO stationDTO = catalogServiceClient.getStationById(appToken, orderEntity.getStation().getId());
         final StationResponseDTO.Service service = stationDTO.getServices().stream()
@@ -136,6 +142,9 @@ public class OrderManager {
 
     // /account/.../cards/...
     public OrderResponseDTO removePositionForId(final Authentication authentication, final long id, final long positionId) {
+        if (!authentication.hasRole(Roles.ROLE_ORDER)) {
+            throw new ForbiddenException();
+        }
         OrderEntity orderEntity = orderRepository.getReferenceById(id);
         // TODO: check role & stationId
         OrderPositionEntity orderPositionEntity = orderPositionRepository.findById(positionId).orElseThrow(RuntimeException::new);
@@ -151,14 +160,16 @@ public class OrderManager {
 
     public OrderResponseDTO finishById(final Authentication authentication, final long id) {
         // TODO: check role & stationId
-
+        if (!authentication.hasRole(Roles.ROLE_ORDER)) {
+            throw new ForbiddenException();
+        }
         final OrderEntity orderEntity = orderRepository.getReferenceById(id);
         orderEntity.setStatus("завершён");
         return orderEntityToOrderResponseDTO.apply(orderEntity);
     }
 
     public void deleteById(Authentication authentication, long id) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_SERVICE)) {
+        if (!authentication.hasRole(Roles.ROLE_ORDER)) {
             throw new ForbiddenException();
         }
         orderRepository.deleteById(id);

@@ -71,7 +71,7 @@ public class AuthManager {
     }
 
     public VerificationResponseDTO verify(final Authentication authentication, final VerificationRequestDTO requestDTO) {
-        if (!authentication.hasRole(Roles.ROLE_SERVICE)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN)) {
             throw new ForbiddenException();
         }
 
