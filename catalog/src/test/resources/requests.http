@@ -87,10 +87,12 @@ Content-Type: application/json
   "serviceIds": [5, 2, 3]
 }
 
+
+### stations.deleteById
+DELETE http://localhost:8002/stations/5
+X-Token: {{token}}
+
 ### services.deleteById
 DELETE http://localhost:8002/services/1
 X-Token: {{token}}
 
-### stations.deleteById/
-DELETE http://localhost:8002/stations/5
-X-Token: {{token}}
