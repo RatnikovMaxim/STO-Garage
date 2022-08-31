@@ -45,7 +45,7 @@ X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "name": "Вид работ 3"
+  "name": "Замена масла"
 }
 
 ### stations.create
@@ -54,7 +54,7 @@ X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "name": "Название сервиса 4",
+  "name": "КАНАВТОГРАД",
   "serviceIds": [1, 2, 3]
 }
 
@@ -64,7 +64,7 @@ X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "name": "Название СТО",
+  "name": "ТТСАВТО",
   "servicesIds": [5, 2, 3]
 }
 
@@ -144,30 +144,30 @@ Content-Type: application/json
 {
   "id": 0,
   "user": {
-    "id": 1,
-    "name": "Vasya"
+    "id": 4,
+    "name": "vasya"
   },
   "station": {
-    "id": 1,
-    "name": "гараж"
+    "id": 6,
+    "name": "Fordгараж"
   },
   "serviceIds": [1, 2],
   "status": "заброннирован"
 }
 
 ### orders.addPosition
-POST http://localhost:8004/orders/1/positions
+POST http://localhost:8004/orders/8/positions
 X-Token: {{token}}
 Content-Type: application/json
 
 {
   "id": 0,
-  "serviceId": 1,
-  "price": 40000
+  "serviceId": 2,
+  "price": 400000
 }
 
 ### orders.removePosition
-DELETE http://localhost:8004/orders/1/positions/1
+DELETE http://localhost:8004/orders/1/positions/7
 X-Token: {{token}}
 
 ### orders.finishByid

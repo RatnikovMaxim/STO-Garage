@@ -34,7 +34,8 @@ public class UserManager {
             throw new ForbiddenException();
         }
 
-        return userRepository.findAll().stream()
+        final List<UserEntity> all = userRepository.findAll();
+        return all.stream()
                 .map(userEntityToUserResponseDTO)
                 .collect(Collectors.toList())
                 ;
