@@ -59,13 +59,13 @@ Content-Type: application/json
 }
 
 ### stations.update
-PUT http://localhost:8002/stations/6
+PUT http://localhost:8002/stations/1
 X-Token: {{token}}
 Content-Type: application/json
 
 {
   "name": "Название СТО",
-  "serviceSIds": [5, 2, 3]
+  "servicesIds": [5, 2, 3]
 }
 
 ### services.deleteById
@@ -129,11 +129,11 @@ X-Token: {{token}}
 
 
 ### orders.getAll конкретной СТО
-GET http://localhost:8004/orders?stationId=2&start=1661806800&finish=1665863343
+GET http://localhost:8004/orders?stationId=2&start=1661806800&finish=1669863343
 X-Token: {{token}}
 
 ### orders.getById
-GET http://localhost:8004/orders/2
+GET http://localhost:8004/orders/1
 X-Token: {{token}}
 
 ### orders.create
@@ -167,7 +167,6 @@ Content-Type: application/json
 }
 
 ### orders.removePosition
-
 DELETE http://localhost:8004/orders/1/positions/1
 X-Token: {{token}}
 
