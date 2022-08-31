@@ -91,6 +91,6 @@ Content-Type: application/json
 DELETE http://localhost:8002/services/1
 X-Token: {{token}}
 
-### stations.deleteById
+### stations.deleteById/
 DELETE http://localhost:8002/stations/5
 X-Token: {{token}}
