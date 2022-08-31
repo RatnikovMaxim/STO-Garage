@@ -2,6 +2,7 @@ package com.example.planner.controller;
 
 import com.example.planner.dto.AppointmentRequestDTO;
 import com.example.planner.dto.AppointmentResponseDTO;
+import com.example.planner.dto.AppointmentServiceRequestDTO;
 import com.example.planner.manager.AppointmentManager;
 import com.example.planner.security.Authentication;
 import lombok.RequiredArgsConstructor;
@@ -46,23 +47,32 @@ public class AppointmentController {
         return responseDTO;
     }
 
-    @DeleteMapping("/{id}/positions/{positionId}")
-    public AppointmentResponseDTO addPosition(
+    @PostMapping("/{id}/services/{serviceId}")
+    public AppointmentResponseDTO addService(
             @RequestAttribute final Authentication authentication,
             @Min(1) @PathVariable final long id,
-            @Min(1) @PathVariable final long positionId
+            @Valid @RequestBody final AppointmentServiceRequestDTO requestDTO
     ) {
-        return manager.removePositionForId(authentication, id, positionId);
+        return manager.addServiceForId(authentication, id, requestDTO);
     }
 
-    @PutMapping("/{id}")
-    public AppointmentResponseDTO finishById(
+    @DeleteMapping("/{id}/services/{serviceId}")
+    public AppointmentResponseDTO removeService(
             @RequestAttribute final Authentication authentication,
-            @Min(1) @PathVariable final long id
+            @Min(1) @PathVariable final long id,
+            @Min(1) @PathVariable final long serviceId
     ) {
-        final AppointmentResponseDTO responseDTO = manager.finishById(authentication, id);
-        return responseDTO;
+        return manager.removeServiceForId(authentication, id, serviceId);
     }
+
+//    @PutMapping("/{id}")
+//    public AppointmentResponseDTO finishById(
+//            @RequestAttribute final Authentication authentication,
+//            @Min(1) @PathVariable final long id
+//    ) {
+//        final AppointmentResponseDTO responseDTO = manager.finishById(authentication, id);
+//        return responseDTO;
+//    }
 
     @DeleteMapping("/{id}")
     public void deleteById(
