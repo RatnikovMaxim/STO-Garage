@@ -79,7 +79,51 @@ X-Token: {{token}}
 
 ===PLANNER===
 
+### planner.getAll
+GET http://localhost:8003/planner?stationId=1&start=2661806800&finish=2765863343
+X-Token: {{token}}
 
+### planner.getById
+GET http://localhost:8003/planner/2
+X-Token: {{token}}
+
+### planner.create
+POST http://localhost:8003/planner
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "user": {
+    "id": 1,
+    "name": "Vasya"
+  },
+  "station": {
+    "id": 1,
+    "name": "гараж"
+  },
+  "time": 1671806800,
+  "serviceIds": [1, 2],
+  "status": "забронирован"
+}
+
+### planner.addService
+POST http://localhost:8003/planner/1/services
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "serviceId": 1
+}
+
+### planner.removeService
+DELETE http://localhost:8003/planner/1/services/1
+X-Token: {{token}}
+
+### planner.deleteById
+DELETE http://localhost:8003/planner/1
+X-Token: {{token}}
 
 ===ORDERS===
 
