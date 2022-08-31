@@ -9,9 +9,9 @@ VALUES ('Автосеть Гараж'),
 INSERT INTO services(name)
 VALUES ('Шиномонтаж'),
        ('Техцентр'),
-       ('Автосервис'),
+       ('Кузовные работы'),
        ('Эвакуатор'),
-       ('Автомагазин');
+       ('Слесарные работы');
 
 
 INSERT INTO station_services(station_id, service_id)
