@@ -1,16 +1,19 @@
-CREATE TABLE planner
+CREATE TABLE appointments
 (
     id                 BIGSERIAL PRIMARY KEY,
-    owner_id           BIGINT      NOT NULL,
-    sto_id             BIGINT      NOT NULL,
-    booking_time       TIMESTAMPTZ NOT NULL,
-    canceled           BOOLEAN     NOT NULL DEFAULT FALSE,
+    user_id            BIGINT      NOT NULL,
+    user_name          TEXT        NOT NULL,
+    station_id         BIGINT      NOT NULL,
+    station_name       TEXT        NOT NULL,
+    time               TIMESTAMPTZ NOT NULL,
+    status             TEXT        NOT NULL,
     created            TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE planner_services
+CREATE TABLE appointment_services
 (
     id                 BIGSERIAL PRIMARY KEY,
-    planner_id         BIGINT      NOT NUll,
-    service_id         BIGINT      NOT NUll
+    appointment_id     BIGINT      NOT NUll,
+    service_id         BIGINT      NOT NUll,
+    service_name       TEXT   NOT NULL
 );

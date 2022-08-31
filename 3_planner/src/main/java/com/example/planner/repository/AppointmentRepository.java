@@ -9,5 +9,4 @@ import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Long> {
     List<AppointmentEntity> findAllByStationIdAndCreatedBetween(long stationId, Instant start, Instant finish);
-
 }

@@ -24,6 +24,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.example.planner.security.Roles.ROLE_SERVICE;
+import static com.example.planner.security.Roles.ROLE_USER;
 
 @Component
 @Transactional
@@ -67,11 +68,11 @@ public class AppointmentManager {
             entity.getServices().stream().map(appointmentServiceEntityToAppointmentService).collect(Collectors.toList()),
             entity.getStatus()
     );
-    private final Function<AppointmentResponseDTO.User, AppointmentEntity.UserEmbedded> userToUserEmbedded = dto -> new AppointmentEntity.UserEmbedded(
+    private final Function<AppointmentRequestDTO.User, AppointmentEntity.UserEmbedded> userToUserEmbedded = dto -> new AppointmentEntity.UserEmbedded(
             dto.getId(),
             dto.getName()
     );
-    private final Function<AppointmentResponseDTO.Station, AppointmentEntity.StationEmbedded> stationToStationEmbedded = dto -> new AppointmentEntity.StationEmbedded(
+    private final Function<AppointmentRequestDTO.Station, AppointmentEntity.StationEmbedded> stationToStationEmbedded = dto -> new AppointmentEntity.StationEmbedded(
             dto.getId(),
             dto.getName()
     );
@@ -98,7 +99,7 @@ public class AppointmentManager {
     }
 
     public AppointmentResponseDTO create(final Authentication authentication, final AppointmentRequestDTO requestDTO) {
-        if (authentication.hasRole(ROLE_SERVICE)) {
+        if (!authentication.hasRole(ROLE_USER)) {
             throw new ForbiddenException();
         }
 
@@ -115,7 +116,7 @@ public class AppointmentManager {
         return appointmentEntityToAppointmentResponseDTO.apply(savedEntity);
     }
 
-    public AppointmentResponseDTO addPositionForId(final Authentication authentication, final long id, final AppointmentServiceRequestDTO requestDTO) {
+    public AppointmentResponseDTO addServiceForId(final Authentication authentication, final long id, final AppointmentServiceRequestDTO requestDTO) {
         AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
         final StationResponseDTO stationDTO = catalogServiceClient.getStationById(appToken, appointmentEntity.getStation().getId());
         final StationResponseDTO.Service service = stationDTO.getServices().stream()
@@ -124,15 +125,15 @@ public class AppointmentManager {
                 .orElseThrow(RuntimeException::new);
 
         AppointmentServiceEntity appointmentServiceEntity = new AppointmentServiceEntity(
-                        0,
-                appointmentEntity,
-                new AppointmentServiceEntity.ServiceEmbedded(service.getId(), service.getName())
+                0,
+                new AppointmentServiceEntity.ServiceEmbedded(service.getId(), service.getName()),
+                appointmentEntity
                 );
         AppointmentServiceEntity savedEntity = appointmentServiceRepository.save(appointmentServiceEntity); // CASCADE
         return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
     }
 
-    public AppointmentResponseDTO removePositionForId(final Authentication authentication, final long id, final long positionId) {
+    public AppointmentResponseDTO removeServiceForId(final Authentication authentication, final long id, final long positionId) {
         AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
         AppointmentServiceEntity appointmentServiceEntity = appointmentServiceRepository.findById(positionId).orElseThrow(RuntimeException::new);
         if (appointmentServiceEntity.getService().getId() != appointmentEntity.getId()) {
@@ -144,12 +145,12 @@ public class AppointmentManager {
         return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
     }
 
-    public AppointmentResponseDTO finishById(final Authentication authentication, final long id) {
-
-        final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
-        appointmentEntity.setStatus("завершён");
-        return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
-    }
+//    public AppointmentResponseDTO finishById(final Authentication authentication, final long id) {
+//
+//        final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
+//        appointmentEntity.setStatus("завершён");
+//        return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
+//    }
 
     public void deleteById(Authentication authentication, long id) {
         if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_SERVICE)) {

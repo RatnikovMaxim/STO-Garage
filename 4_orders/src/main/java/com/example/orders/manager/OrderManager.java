@@ -3,7 +3,6 @@ package com.example.orders.manager;
 import com.example.id.security.Roles;
 
 import static com.example.id.security.Roles.ROLE_USER;
-import static com.example.id.security.Roles.ROLE_ORDER;
 
 import com.example.orders.client.CatalogServiceClient;
 import com.example.orders.dto.OrderPositionRequestDTO;
@@ -14,6 +13,7 @@ import com.example.orders.entity.OrderEntity;
 import com.example.orders.entity.OrderPositionEntity;
 import com.example.orders.exception.ForbiddenException;
 import com.example.orders.exception.OrderNotFoundException;
+import com.example.orders.exception.ServiceAlreadyExistsException;
 import com.example.orders.repository.OrderPositionRepository;
 import com.example.orders.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -115,8 +115,10 @@ public class OrderManager {
                 requestDTO.getStatus(),
                 Instant.now()
         );
+//        OrderPositionEntity savedEntity = orderPositionRepository.save(orderPositionEntity); // CASCADE
+//        return orderEntityToOrderResponseDTO.apply(orderEntity);
         final OrderEntity savedEntity = orderRepository.save(orderEntity);
-        return orderEntityToOrderResponseDTO.apply(savedEntity);
+        return orderEntityToOrderResponseDTO.apply(orderEntity);
     }
 
     public OrderResponseDTO addPositionForId(final Authentication authentication, final long id, final OrderPositionRequestDTO requestDTO) {
@@ -128,7 +130,7 @@ public class OrderManager {
         final StationResponseDTO.Service service = stationDTO.getServices().stream()
                 .filter(o -> o.getId() == requestDTO.getServiceId())
                 .findFirst()
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(ServiceAlreadyExistsException::new);
 
         OrderPositionEntity orderPositionEntity = new OrderPositionEntity(
                 0,

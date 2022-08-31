@@ -18,14 +18,14 @@ public class AppointmentServiceEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "appointment_id")
-    private AppointmentEntity appointment;
-
     @Embedded
     @AttributeOverride(name = "id", column = @Column(name = "service_id"))
     @AttributeOverride(name = "name", column = @Column(name = "service_name"))
     private ServiceEmbedded service;
+
+    @ManyToOne
+    @JoinColumn(name = "appointment_id")
+    private AppointmentEntity appointment;
 
     @Embeddable
     @NoArgsConstructor

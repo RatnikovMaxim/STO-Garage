@@ -45,7 +45,7 @@ X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "name": "Вид работ 3"
+  "name": "Замена масла"
 }
 
 ### stations.create
@@ -54,18 +54,18 @@ X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "name": "Название сервиса 4",
+  "name": "КАНАВТОГРАД",
   "serviceIds": [1, 2, 3]
 }
 
 ### stations.update
-PUT http://localhost:8002/stations/6
+PUT http://localhost:8002/stations/1
 X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "name": "Название СТО",
-  "serviceSIds": [5, 2, 3]
+  "name": "ТТСАВТО",
+  "servicesIds": [5, 2, 3]
 }
 
 ### services.deleteById
@@ -79,21 +79,16 @@ X-Token: {{token}}
 
 ===PLANNER===
 
-
-
-===ORDERS===
-
-
-### orders.getAll конкретной СТО
-GET http://localhost:8004/orders?stationId=2&start=1661806800&finish=1665863343
+### planner.getAll
+GET http://localhost:8003/planner?stationId=1&start=1670806700&finish=1692806900
 X-Token: {{token}}
 
-### orders.getById
-GET http://localhost:8004/orders/2
+### planner.getById
+GET http://localhost:8003/planner/1
 X-Token: {{token}}
 
-### orders.create
-POST http://localhost:8004/orders
+### planner.create
+POST http://localhost:8003/planner
 X-Token: {{token}}
 Content-Type: application/json
 
@@ -105,26 +100,74 @@ Content-Type: application/json
   },
   "station": {
     "id": 1,
-    "name": "гараж"
+    "name": "Автосеть Гараж"
+  },
+  "time": 1681806900,
+  "serviceIds": [1, 2],
+  "status": "забронирован"
+}
+
+### planner.addService
+POST http://localhost:8003/planner/1/services
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "serviceId": 1
+}
+
+### planner.removeService
+DELETE http://localhost:8003/planner/1/services/1
+X-Token: {{token}}
+
+### planner.deleteById
+DELETE http://localhost:8003/planner/1
+X-Token: {{token}}
+
+===ORDERS===
+
+
+### orders.getAll конкретной СТО
+GET http://localhost:8004/orders?stationId=2&start=1661806800&finish=1669863343
+X-Token: {{token}}
+
+### orders.getById
+GET http://localhost:8004/orders/1
+X-Token: {{token}}
+
+### orders.create
+POST http://localhost:8004/orders
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "user": {
+    "id": 4,
+    "name": "vasya"
+  },
+  "station": {
+    "id": 6,
+    "name": "Fordгараж"
   },
   "serviceIds": [1, 2],
   "status": "заброннирован"
 }
 
 ### orders.addPosition
-POST http://localhost:8004/orders/1/positions
+POST http://localhost:8004/orders/8/positions
 X-Token: {{token}}
 Content-Type: application/json
 
 {
   "id": 0,
-  "serviceId": 1,
-  "price": 40000
+  "serviceId": 2,
+  "price": 400000
 }
 
 ### orders.removePosition
-
-DELETE http://localhost:8004/orders/1/positions/1
+DELETE http://localhost:8004/orders/1/positions/7
 X-Token: {{token}}
 
 ### orders.finishByid
