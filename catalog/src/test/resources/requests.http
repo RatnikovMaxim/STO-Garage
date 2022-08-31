@@ -72,11 +72,20 @@ Content-Type: application/json
 
 {
   "id": 5,
-  "name": "Название сервиса UPDATE",
+  "name": "Название Stations UPDATE",
   "serviceIds": [5, 2, 3]
 }
 
+### services.update
+PUT http://localhost:8002/services
+X-Token: {{token}}
+Content-Type: application/json
 
+{
+  "id": 5,
+  "name": "Название Services UPDATE",
+  "serviceIds": [5, 2, 3]
+}
 
 ### services.deleteById
 DELETE http://localhost:8002/services/1
