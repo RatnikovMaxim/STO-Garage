@@ -24,6 +24,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.example.planner.security.Roles.ROLE_SERVICE;
+import static com.example.planner.security.Roles.ROLE_USER;
 
 @Component
 @Transactional
@@ -98,7 +99,7 @@ public class AppointmentManager {
     }
 
     public AppointmentResponseDTO create(final Authentication authentication, final AppointmentRequestDTO requestDTO) {
-        if (authentication.hasRole(ROLE_SERVICE)) {
+        if (!authentication.hasRole(ROLE_USER)) {
             throw new ForbiddenException();
         }
 

@@ -80,11 +80,11 @@ X-Token: {{token}}
 ===PLANNER===
 
 ### planner.getAll
-GET http://localhost:8003/planner?stationId=1&start=2661806800&finish=2765863343
+GET http://localhost:8003/planner?stationId=1&start=1670806700&finish=1692806900
 X-Token: {{token}}
 
 ### planner.getById
-GET http://localhost:8003/planner/2
+GET http://localhost:8003/planner/1
 X-Token: {{token}}
 
 ### planner.create
@@ -100,9 +100,9 @@ Content-Type: application/json
   },
   "station": {
     "id": 1,
-    "name": "гараж"
+    "name": "Автосеть Гараж"
   },
-  "time": 1671806800,
+  "time": 1681806900,
   "serviceIds": [1, 2],
   "status": "забронирован"
 }
