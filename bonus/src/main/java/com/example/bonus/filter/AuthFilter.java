@@ -2,8 +2,8 @@ package com.example.bonus.filter;
 
 import com.example.bonus.client.IdServiceClient;
 import com.example.bonus.dto.VerificationResponseDTO;
-import com.example.id.dto.VerificationRequestDTO;
-import com.example.id.security.Authentication;
+import com.example.bonus.security.Authentication;
+import com.example.bonus.dto.VerificationRequestDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
