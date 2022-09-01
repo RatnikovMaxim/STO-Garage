@@ -4,14 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class VerificationResponseDTO {
-    private long id;
-    private String login;
-    private List<String> roles;
+public class VerificationRequestDTO {
+    @NotNull
+    private String token;
 }
-

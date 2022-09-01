@@ -15,13 +15,16 @@ import java.time.Instant;
 @Getter
 @Setter
 public class BonusEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private long clientId;
+    @Embedded
+    @AttributeOverride(name = "id", column = @Column(name = "user_id"))
+    @AttributeOverride(name = "name", column = @Column(name = "user_name"))
+    private UserEmbedded user;
 
-    private String clientName;
 
     private long orderId;
 
@@ -30,4 +33,14 @@ public class BonusEntity {
     private Instant created;
 
     private Instant validTo;
+
+    @Embeddable
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    @Setter
+    public static class UserEmbedded {
+        private long id;
+        private String name;
+    }
 }
