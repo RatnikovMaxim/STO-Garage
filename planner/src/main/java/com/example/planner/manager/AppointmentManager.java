@@ -81,7 +81,7 @@ public class AppointmentManager {
             final Authentication authentication,
             final long stationId, final long start, final long finish) {
 
-        return appointmentRepository.findAllByStationIdAndCreatedBetween(
+        return appointmentRepository.findAllByStationIdAndTimeBetween(
                         stationId, Instant.ofEpochSecond(start), Instant.ofEpochSecond(finish)
                 ).stream()
                 .map(appointmentEntityToAppointmentResponseDTO)
