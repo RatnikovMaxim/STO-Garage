@@ -128,8 +128,8 @@ public class AppointmentManager {
                 0,
                 new AppointmentServiceEntity.ServiceEmbedded(service.getId(), service.getName()),
                 appointmentEntity
-                );
-        AppointmentServiceEntity savedEntity = appointmentServiceRepository.save(appointmentServiceEntity); // CASCADE
+        );
+        AppointmentServiceEntity savedEntity = appointmentServiceRepository.save(appointmentServiceEntity);
         return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
     }
 

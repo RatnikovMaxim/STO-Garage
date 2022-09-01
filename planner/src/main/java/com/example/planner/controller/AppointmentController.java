@@ -47,7 +47,7 @@ public class AppointmentController {
         return responseDTO;
     }
 
-    @PostMapping("/{id}/services/{serviceId}")
+    @PostMapping("/{id}/services")
     public AppointmentResponseDTO addService(
             @RequestAttribute final Authentication authentication,
             @Min(1) @PathVariable final long id,
@@ -81,5 +81,4 @@ public class AppointmentController {
     ) {
         manager.deleteById(authentication, id);
     }
-
 }
