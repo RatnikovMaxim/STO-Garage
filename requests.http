@@ -89,11 +89,11 @@ X-Token: {{token}}
 ===PLANNER===
 
 ### planner.getAll
-GET http://localhost:8003/planner?stationId=1&start=1670806700&finish=1692806900
+GET http://localhost:8003/planner?stationId=1&start=1652218351&finish=1662228351
 X-Token: {{token}}
 
 ### planner.getById
-GET http://localhost:8003/planner/1
+GET http://localhost:8003/planner/15
 X-Token: {{token}}
 
 ### planner.create
@@ -109,15 +109,15 @@ Content-Type: application/json
   },
   "station": {
     "id": 1,
-    "name": "Автосеть Гараж"
+    "name": "Проверка 9:59"
   },
-  "time": 1681806900,
+  "time": 1662199140,
   "serviceIds": [1, 2],
   "status": "забронирован"
 }
 
 ### planner.addService
-POST http://localhost:8003/planner/1/services
+POST http://localhost:8003/planner/15/services
 X-Token: {{token}}
 Content-Type: application/json
 
@@ -127,11 +127,11 @@ Content-Type: application/json
 }
 
 ### planner.removeService
-DELETE http://localhost:8003/planner/1/services/1
+DELETE http://localhost:8003/planner/1/services/2
 X-Token: {{token}}
 
 ### planner.deleteById
-DELETE http://localhost:8003/planner/1
+DELETE http://localhost:8003/planner/10
 X-Token: {{token}}
 
 ===ORDERS===
@@ -141,9 +141,11 @@ X-Token: {{token}}
 GET http://localhost:8004/orders?stationId=2&start=1661806800&finish=1669863343
 X-Token: {{token}}
 
+
 ### orders.getById
 GET http://localhost:8004/orders/1
 X-Token: {{token}}
+
 
 ### orders.create
 POST http://localhost:8004/orders
@@ -186,3 +188,23 @@ X-Token: {{token}}
 ### orders.deleteById
 DELETE http://localhost:8004/orders/1
 X-Token: {{token}}
+
+
+===BONUS===
+
+### bonus.getAll
+GET http://localhost:8006/bonus
+X-Token: {{token}}
+
+### bonus.getById
+GET http://localhost:8006/bonus/2
+X-Token: {{token}}
+
+### bonus.create
+POST http://localhost:8004/bonus
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+
+}

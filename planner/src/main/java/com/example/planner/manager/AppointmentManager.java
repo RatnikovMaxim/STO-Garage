@@ -81,11 +81,15 @@ public class AppointmentManager {
             final Authentication authentication,
             final long stationId, final long start, final long finish) {
 
-        return appointmentRepository.findAllByStationIdAndCreatedBetween(
-                        stationId, Instant.ofEpochSecond(start), Instant.ofEpochSecond(finish)
-                ).stream()
-                .map(appointmentEntityToAppointmentResponseDTO)
-                .collect(Collectors.toList());
+        if (authentication.hasRole(Roles.ROLE_PLANNER)) {
+
+            return appointmentRepository.findAllByStationIdAndTimeBetween(
+                            stationId, Instant.ofEpochSecond(start), Instant.ofEpochSecond(finish)
+                    ).stream()
+                    .map(appointmentEntityToAppointmentResponseDTO)
+                    .collect(Collectors.toList());
+        }
+        else throw new ForbiddenException();
     }
 
     public AppointmentResponseDTO getById(final Authentication authentication, long id) {
@@ -128,8 +132,8 @@ public class AppointmentManager {
                 0,
                 new AppointmentServiceEntity.ServiceEmbedded(service.getId(), service.getName()),
                 appointmentEntity
-                );
-        AppointmentServiceEntity savedEntity = appointmentServiceRepository.save(appointmentServiceEntity); // CASCADE
+        );
+        AppointmentServiceEntity savedEntity = appointmentServiceRepository.save(appointmentServiceEntity);
         return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
     }
 

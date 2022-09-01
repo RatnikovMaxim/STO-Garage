@@ -12,4 +12,5 @@ public class AppointmentServiceRequestDTO {
     @Min(0)
     private long id;
     private long serviceId;
+    private String serviceName;
 }
