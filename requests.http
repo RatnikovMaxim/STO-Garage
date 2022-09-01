@@ -132,9 +132,11 @@ X-Token: {{token}}
 GET http://localhost:8004/orders?stationId=2&start=1661806800&finish=1669863343
 X-Token: {{token}}
 
+
 ### orders.getById
 GET http://localhost:8004/orders/1
 X-Token: {{token}}
+
 
 ### orders.create
 POST http://localhost:8004/orders
@@ -177,3 +179,23 @@ X-Token: {{token}}
 ### orders.deleteById
 DELETE http://localhost:8004/orders/1
 X-Token: {{token}}
+
+
+===BONUS===
+
+### bonus.getAll
+GET http://localhost:8006/bonus
+X-Token: {{token}}
+
+### bonus.getById
+GET http://localhost:8006/bonus/2
+X-Token: {{token}}
+
+### bonus.create
+POST http://localhost:8004/bonus
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+
+}
