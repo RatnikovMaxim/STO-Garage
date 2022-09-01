@@ -80,7 +80,7 @@ X-Token: {{token}}
 ===PLANNER===
 
 ### planner.getAll
-GET http://localhost:8003/planner?stationId=1&start=1670806700&finish=1692806900
+GET http://localhost:8003/planner?stationId=1&start=1650806700&finish=1702806900
 X-Token: {{token}}
 
 ### planner.getById
@@ -118,7 +118,7 @@ Content-Type: application/json
 }
 
 ### planner.removeService
-DELETE http://localhost:8003/planner/1/services/1
+DELETE http://localhost:8003/planner/1/services/2
 X-Token: {{token}}
 
 ### planner.deleteById
