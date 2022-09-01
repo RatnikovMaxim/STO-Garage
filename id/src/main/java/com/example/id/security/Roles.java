@@ -9,4 +9,5 @@ public class Roles {
     public static final String ROLE_SERVICE = "ROLE_SERVICE";
 
     public static final String ROLE_CATALOG = "ROLE_CATALOG";
+    public static final String ROLE_PLANNER = "ROLE_PLANNER";
 }

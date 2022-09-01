@@ -14,7 +14,16 @@ Content-Type: application/json
 
 ### auth.verify
 POST http://localhost:8001/auth/verify
-X-Token: rzl00lRt66/pTUrCCYSeRdzRaQKfz9ZZV5q63NIafNy4Wn6YvsekXRHeqIXJst+5nQn+HU1iWE0E/PoZ
+X-Token: b11n/m+0o4Ue33ssK/zO1zgWGWxsrv9nvOKH3gjvTC/GzW36VSbK5J6sxvk0cma9FDmF25jPdV0GwFZv
+Content-Type: application/json
+
+{
+  "token": "{{token}}"
+}
+
+### id.getAll
+GET http://localhost:8001/users
+X-Token: b11n/m+0o4Ue33ssK/zO1zgWGWxsrv9nvOKH3gjvTC/GzW36VSbK5J6sxvk0cma9FDmF25jPdV0GwFZv
 Content-Type: application/json
 
 {
