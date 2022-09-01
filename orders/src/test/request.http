@@ -1,0 +1,8 @@
+### request without gateway
+POST http://localhost:8004/api/tasks
+Content-Type: application/json
+
+{
+  "id": null,
+  "data": "learn kafka"
+}
