@@ -84,7 +84,7 @@ GET http://localhost:8003/planner?stationId=1&start=1652218351&finish=1662228351
 X-Token: {{token}}
 
 ### planner.getById
-GET http://localhost:8003/planner/1
+GET http://localhost:8003/planner/15
 X-Token: {{token}}
 
 ### planner.create
@@ -108,7 +108,7 @@ Content-Type: application/json
 }
 
 ### planner.addService
-POST http://localhost:8003/planner/1/services
+POST http://localhost:8003/planner/15/services
 X-Token: {{token}}
 Content-Type: application/json
 
