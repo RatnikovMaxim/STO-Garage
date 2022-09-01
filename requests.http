@@ -80,7 +80,7 @@ X-Token: {{token}}
 ===PLANNER===
 
 ### planner.getAll
-GET http://localhost:8003/planner?stationId=1&start=1662228351&finish=1662328351
+GET http://localhost:8003/planner?stationId=1&start=1652218351&finish=1662228351
 X-Token: {{token}}
 
 ### planner.getById

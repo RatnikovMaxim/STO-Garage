@@ -81,11 +81,15 @@ public class AppointmentManager {
             final Authentication authentication,
             final long stationId, final long start, final long finish) {
 
-        return appointmentRepository.findAllByStationIdAndTimeBetween(
-                        stationId, Instant.ofEpochSecond(start), Instant.ofEpochSecond(finish)
-                ).stream()
-                .map(appointmentEntityToAppointmentResponseDTO)
-                .collect(Collectors.toList());
+        if (authentication.hasRole(Roles.ROLE_PLANNER)) {
+
+            return appointmentRepository.findAllByStationIdAndTimeBetween(
+                            stationId, Instant.ofEpochSecond(start), Instant.ofEpochSecond(finish)
+                    ).stream()
+                    .map(appointmentEntityToAppointmentResponseDTO)
+                    .collect(Collectors.toList());
+        }
+        else throw new ForbiddenException();
     }
 
     public AppointmentResponseDTO getById(final Authentication authentication, long id) {
