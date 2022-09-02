@@ -14,7 +14,7 @@ Content-Type: application/json
 
 ### auth.verify
 POST http://localhost:8001/auth/verify
-X-Token: /+3UYSLoYb2/GPMI81JN7v6Yy2sU7IuxdQL6CfNXsqgJeDBAujgs09I4DjbTQi52+pL8JnrqCQpl89dG
+X-Token: LffEskh6hohMaJ/qv5iIP8Gkp+mH9N+a+i1exTmG7SkeV+Rwja6KRU7BzVS5Py9Sp4Lzp5E834tPSX5A
 Content-Type: application/json
 
 {
@@ -23,14 +23,14 @@ Content-Type: application/json
 
 ### id.getAll
 GET http://localhost:8001/users
-X-Token: /+3UYSLoYb2/GPMI81JN7v6Yy2sU7IuxdQL6CfNXsqgJeDBAujgs09I4DjbTQi52+pL8JnrqCQpl89dG
+X-Token: LffEskh6hohMaJ/qv5iIP8Gkp+mH9N+a+i1exTmG7SkeV+Rwja6KRU7BzVS5Py9Sp4Lzp5E834tPSX5A
 Content-Type: application/json
 
 {
   "token": "{{token}}"
 }
 ### id.getById
-GET http://localhost:8001/users/6
+GET http://localhost:8001/users/1
 X-Token: {{token}}
 
 ### id.create
@@ -40,11 +40,28 @@ Content-Type: application/json
 
 {
   "id": 0,
-  "login": "alex",
-  "name": "sasha",
+  "login": "mstr",
+  "name": "master kanavtograd",
+  "password": "123456789",
+  "roles":["ROLE_CATALOG"]
+}
+
+### id.update
+PUT http://localhost:8001/users
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "login": "mng",
+  "name": "manager",
   "password": "12345678",
   "roles":["ROLE_USER"]
 }
+
+### id.deleteById
+DELETE http://localhost:8001/users/2
+X-Token: {{token}}
 
 ###==CATALOG===
 
