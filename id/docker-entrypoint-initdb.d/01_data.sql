@@ -12,7 +12,27 @@ FROM users
 WHERE login = 'vasya';
 
 INSERT INTO user_roles(user_id, role)
+SELECT id, 'ROLE_CATALOG'
+FROM users
+WHERE login = 'vasya';
+
+INSERT INTO user_roles(user_id, role)
+SELECT id, 'ROLE_PLANNER'
+FROM users
+WHERE login = 'vasya';
+
+INSERT INTO user_roles(user_id, role)
 SELECT id, 'ROLE_ORDER'
+FROM users
+WHERE login = 'vasya';
+
+INSERT INTO user_roles(user_id, role)
+SELECT id, 'ROLE_BONUS'
+FROM users
+WHERE login = 'vasya';
+
+INSERT INTO user_roles(user_id, role)
+SELECT id, 'ROLE_MESSAGE'
 FROM users
 WHERE login = 'vasya';
 

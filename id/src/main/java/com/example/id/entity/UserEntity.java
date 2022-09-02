@@ -19,6 +19,8 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(unique = true, nullable = false, columnDefinition = "TEXT")
+    private String name;
+    @Column(unique = true, nullable = false, columnDefinition = "TEXT")
     private String login;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String password;
@@ -26,4 +28,6 @@ public class UserEntity {
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role", nullable = false, columnDefinition = "TEXT")
     private List<String> roles;
+  //  @Column(name = "station_id", nullable = false)
+//     private long stationId;
 }

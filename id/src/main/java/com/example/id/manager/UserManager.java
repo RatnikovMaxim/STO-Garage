@@ -59,6 +59,7 @@ public class UserManager {
 
         final UserEntity userEntity = new UserEntity(
                 0,
+                requestDTO.getName(),
                 requestDTO.getLogin(),
                 passwordEncoder.encode(requestDTO.getPassword()),
                 requestDTO.getRoles()
