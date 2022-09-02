@@ -74,6 +74,7 @@ public class UserManager {
         }
 
         final UserEntity userEntity = userRepository.getReferenceById(requestDTO.getId());
+        userEntity.setName(requestDTO.getName());
         userEntity.setLogin(requestDTO.getLogin());
         userEntity.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
         userEntity.setRoles(requestDTO.getRoles());
