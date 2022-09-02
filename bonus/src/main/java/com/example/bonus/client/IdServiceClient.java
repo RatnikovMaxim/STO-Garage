@@ -1,6 +1,6 @@
 package com.example.bonus.client;
 
-import com.example.id.dto.VerificationRequestDTO;
+import com.example.bonus.dto.VerificationRequestDTO;
 import com.example.bonus.dto.VerificationResponseDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
