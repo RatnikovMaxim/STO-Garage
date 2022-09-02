@@ -17,6 +17,9 @@ public class UserRequestDTO {
     @Pattern(regexp = "[A-Za-z0-9]{3,100}")
     private String login;
     @NotNull
+    @Pattern(regexp = "[A-Za-z0-9]{3,100}")
+    private String name;
+    @NotNull
     @Size(min = 8, max = 64)
     private String password;
     @NotNull

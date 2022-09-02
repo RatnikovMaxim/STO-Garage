@@ -14,14 +14,39 @@ Content-Type: application/json
 
 ### auth.verify
 POST http://localhost:8001/auth/verify
-X-Token: rzl00lRt66/pTUrCCYSeRdzRaQKfz9ZZV5q63NIafNy4Wn6YvsekXRHeqIXJst+5nQn+HU1iWE0E/PoZ
+X-Token: /+3UYSLoYb2/GPMI81JN7v6Yy2sU7IuxdQL6CfNXsqgJeDBAujgs09I4DjbTQi52+pL8JnrqCQpl89dG
 Content-Type: application/json
 
 {
   "token": "{{token}}"
 }
 
-===CATALOG===
+### id.getAll
+GET http://localhost:8001/users
+X-Token: /+3UYSLoYb2/GPMI81JN7v6Yy2sU7IuxdQL6CfNXsqgJeDBAujgs09I4DjbTQi52+pL8JnrqCQpl89dG
+Content-Type: application/json
+
+{
+  "token": "{{token}}"
+}
+### id.getById
+GET http://localhost:8001/users/6
+X-Token: {{token}}
+
+### id.create
+POST http://localhost:8001/users
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "login": "alex",
+  "name": "sasha",
+  "password": "12345678",
+  "roles":["ROLE_USER"]
+}
+
+###==CATALOG===
 
 ### services.getAll
 GET http://localhost:8002/services
