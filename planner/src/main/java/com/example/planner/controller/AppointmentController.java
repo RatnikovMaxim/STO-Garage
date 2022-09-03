@@ -65,14 +65,14 @@ public class AppointmentController {
         return manager.removeServiceForId(authentication, id, serviceId);
     }
 
-//    @PutMapping("/{id}")
-//    public AppointmentResponseDTO finishById(
-//            @RequestAttribute final Authentication authentication,
-//            @Min(1) @PathVariable final long id
-//    ) {
-//        final AppointmentResponseDTO responseDTO = manager.finishById(authentication, id);
-//        return responseDTO;
-//    }
+    @PutMapping("/{id}")
+    public AppointmentResponseDTO finishById(
+            @RequestAttribute final Authentication authentication,
+            @Min(1) @PathVariable final long id
+    ) {
+        final AppointmentResponseDTO responseDTO = manager.finishById(authentication, id);
+        return responseDTO;
+    }
 
     @DeleteMapping("/{id}")
     public void deleteById(

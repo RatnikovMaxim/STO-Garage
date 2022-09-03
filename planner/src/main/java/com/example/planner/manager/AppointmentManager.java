@@ -23,8 +23,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.example.planner.security.Roles.ROLE_SERVICE;
-import static com.example.planner.security.Roles.ROLE_USER;
+import static com.example.planner.security.Roles.*;
 
 @Component
 @Transactional
@@ -81,7 +80,7 @@ public class AppointmentManager {
             final Authentication authentication,
             final long stationId, final long start, final long finish) {
 
-        if (authentication.hasRole(Roles.ROLE_PLANNER)) {
+        if (authentication.hasRole(ROLE_PLANNER)) {
 
             return appointmentRepository.findAllByStationIdAndTimeBetween(
                             stationId, Instant.ofEpochSecond(start), Instant.ofEpochSecond(finish)
@@ -93,7 +92,7 @@ public class AppointmentManager {
     }
 
     public AppointmentResponseDTO getById(final Authentication authentication, long id) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_SERVICE)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_PLANNER)) {
             throw new ForbiddenException();
         }
         return appointmentRepository.findById(id)
@@ -149,15 +148,15 @@ public class AppointmentManager {
         return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
     }
 
-//    public AppointmentResponseDTO finishById(final Authentication authentication, final long id) {
-//
-//        final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
-//        appointmentEntity.setStatus("завершён");
-//        return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
-//    }
+    public AppointmentResponseDTO finishById(final Authentication authentication, final long id) {
+
+        final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
+        appointmentEntity.setStatus("клиент приехал");
+        return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
+    }
 
     public void deleteById(Authentication authentication, long id) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_SERVICE)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_PLANNER)) {
             throw new ForbiddenException();
         }
         appointmentRepository.deleteById(id);

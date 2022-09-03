@@ -13,4 +13,5 @@ public class VerificationResponseDTO {
     private long id;
     private String login;
     private List<String> roles;
+    private long stationId;
 }

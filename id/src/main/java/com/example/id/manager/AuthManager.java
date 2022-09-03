@@ -78,6 +78,6 @@ public class AuthManager {
         final TokenEntity tokenEntity = tokenRepository.findById(requestDTO.getToken())
                 .orElseThrow(TokenNotFoundException::new);
         final UserEntity userEntity = tokenEntity.getUser();
-        return new VerificationResponseDTO(userEntity.getId(), userEntity.getLogin(), userEntity.getRoles());
+        return new VerificationResponseDTO(userEntity.getId(), userEntity.getLogin(), userEntity.getRoles(), userEntity.getStationId());
     }
 }

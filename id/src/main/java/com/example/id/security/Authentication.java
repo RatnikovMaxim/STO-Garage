@@ -12,6 +12,7 @@ import java.util.List;
 public class Authentication {
     private final long id;
     private final List<String> roles;
+    private final long stationId;
 
     public boolean hasRole(final String role) {
         return roles.contains(role);

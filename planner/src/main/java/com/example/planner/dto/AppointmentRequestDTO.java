@@ -21,8 +21,6 @@ public class AppointmentRequestDTO {
     @NotNull
     private Station station;
     @NotNull
-    private List<Long> serviceIds;
-    @NotNull
     private Instant time;
     @NotNull
     private String status;

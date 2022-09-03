@@ -62,7 +62,8 @@ public class UserManager {
                 requestDTO.getName(),
                 requestDTO.getLogin(),
                 passwordEncoder.encode(requestDTO.getPassword()),
-                requestDTO.getRoles()
+                requestDTO.getRoles(),
+                requestDTO.getStationId()
         );
         final UserEntity savedEntity = userRepository.save(userEntity);
         return userEntityToUserResponseDTO.apply(savedEntity);

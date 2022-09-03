@@ -14,7 +14,7 @@ Content-Type: application/json
 
 ### auth.verify
 POST http://localhost:8001/auth/verify
-X-Token: LffEskh6hohMaJ/qv5iIP8Gkp+mH9N+a+i1exTmG7SkeV+Rwja6KRU7BzVS5Py9Sp4Lzp5E834tPSX5A
+X-Token: {{token}}
 Content-Type: application/json
 
 {
@@ -23,12 +23,13 @@ Content-Type: application/json
 
 ### id.getAll
 GET http://localhost:8001/users
-X-Token: LffEskh6hohMaJ/qv5iIP8Gkp+mH9N+a+i1exTmG7SkeV+Rwja6KRU7BzVS5Py9Sp4Lzp5E834tPSX5A
+X-Token: {{token}}
 Content-Type: application/json
 
 {
   "token": "{{token}}"
 }
+
 ### id.getById
 GET http://localhost:8001/users/1
 X-Token: {{token}}
@@ -43,7 +44,8 @@ Content-Type: application/json
   "login": "mstr",
   "name": "master kanavtograd",
   "password": "123456789",
-  "roles":["ROLE_CATALOG"]
+  "roles":["ROLE_CATALOG"],
+  "stationId": 1
 }
 
 ### id.update
@@ -126,7 +128,7 @@ GET http://localhost:8003/planner?stationId=1&start=1652218351&finish=1662228351
 X-Token: {{token}}
 
 ### planner.getById
-GET http://localhost:8003/planner/15
+GET http://localhost:8003/planner/2
 X-Token: {{token}}
 
 ### planner.create
@@ -145,22 +147,25 @@ Content-Type: application/json
     "name": "Проверка 9:59"
   },
   "time": 1662199140,
-  "serviceIds": [1, 2],
-  "status": "забронирован"
+  "status": "забронировано"
 }
 
 ### planner.addService
-POST http://localhost:8003/planner/15/services
+POST http://localhost:8003/planner/3/services
 X-Token: {{token}}
 Content-Type: application/json
 
 {
   "id": 0,
-  "serviceId": 1
+  "serviceId": 3
 }
 
 ### planner.removeService
 DELETE http://localhost:8003/planner/1/services/2
+X-Token: {{token}}
+
+### planner.finishByid
+PUT http://localhost:8003/planner/2
 X-Token: {{token}}
 
 ### planner.deleteById
