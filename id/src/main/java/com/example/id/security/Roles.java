@@ -10,5 +10,4 @@ public class Roles {
     public static final String ROLE_BONUS = "ROLE_BONUS";
     public static final String ROLE_MESSAGE = "ROLE_MESSAGE";
 
-    public static final String ROLE_SERVICE = "ROLE_SERVICE";
 }

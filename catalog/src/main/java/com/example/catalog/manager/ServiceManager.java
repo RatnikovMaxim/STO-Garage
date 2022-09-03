@@ -45,7 +45,7 @@ public class ServiceManager {
     }
 
     public ServiceResponseDTO create(final Authentication authentication, final ServiceRequestDTO requestDTO) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) || authentication.hasRole(ROLE_CATALOG)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_CATALOG)) {
             throw new ForbiddenException();
         }
         final ServiceEntity serviceEntity = new ServiceEntity(
@@ -58,7 +58,10 @@ public class ServiceManager {
     }
 
     public ServiceResponseDTO update(final Authentication authentication, final ServiceRequestDTO requestDTO) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) || authentication.hasRole(ROLE_CATALOG)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_CATALOG)) {
+            throw new ForbiddenException();
+        }
+        if (!(authentication.getStationId() == requestDTO.getId())){
             throw new ForbiddenException();
         }
         final ServiceEntity serviceEntity = serviceRepository.getReferenceById(requestDTO.getId());
@@ -67,7 +70,7 @@ public class ServiceManager {
     }
 
     public void deleteById(final Authentication authentication, final long id) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) || authentication.hasRole(ROLE_CATALOG)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_CATALOG)) {
             throw new ForbiddenException();
         }
         serviceRepository.deleteById(id);

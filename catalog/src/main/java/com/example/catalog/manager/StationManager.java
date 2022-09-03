@@ -2,7 +2,6 @@ package com.example.catalog.manager;
 
 import com.example.id.security.Authentication;
 import com.example.id.security.Roles;
-//import org.example.security.Roles;
 import lombok.RequiredArgsConstructor;
 import com.example.catalog.dto.StationRequestDTO;
 import com.example.catalog.dto.StationResponseDTO;
@@ -87,7 +86,7 @@ public class StationManager {
     }
 
     public void deleteById(final Authentication authentication, final long id) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) || authentication.hasRole(ROLE_CATALOG)) {
+        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_CATALOG)) {
             throw new ForbiddenException();
         }
         stationRepository.deleteById(id);

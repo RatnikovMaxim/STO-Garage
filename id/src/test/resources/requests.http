@@ -1,5 +1,5 @@
 ### auth.auth
-POST http://localhost:8080/auth
+POST http://localhost:8001/auth
 Content-Type: application/json
 
 {
@@ -10,7 +10,7 @@ Content-Type: application/json
 > {% client.global.set("token", response.body.token); %}
 
 ### auth.verify
-POST http://localhost:8080/auth/verify
+POST http://localhost:8001/auth/verify
 X-Token: rzl00lRt66/pTUrCCYSeRdzRaQKfz9ZZV5q63NIafNy4Wn6YvsekXRHeqIXJst+5nQn+HU1iWE0E/PoZ
 Content-Type: application/json
 
@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ### auth.verify
-POST http://localhost:8080/auth/verify
+POST http://localhost:8001/auth/verify
 X-Token: {{token}}
 Content-Type: application/json
 
@@ -28,16 +28,16 @@ Content-Type: application/json
 }
 
 ### users.getAll
-GET http://localhost:8080/users
+GET http://localhost:8001/users
 X-Token: {{token}}
 
 ### users.getById
-GET http://localhost:8080/users/1
+GET http://localhost:8001/users/1
 X-Login: vasya
 X-Password: password
 
 ### users.create
-POST http://localhost:8080/users
+POST http://localhost:8001/users
 X-Login: vasya
 X-Password: password
 Content-Type: application/json
@@ -50,7 +50,7 @@ Content-Type: application/json
 }
 
 ### users.update
-PUT http://localhost:8080/users
+PUT http://localhost:8001/users
 X-Login: vasya
 X-Password: password
 Content-Type: application/json
@@ -63,10 +63,8 @@ Content-Type: application/json
 }
 
 ### users.deleteById
-DELETE http://localhost:8080/users/2
+DELETE http://localhost:8001/users/2
 X-Login: vasya
 X-Password: password
 
-### music.test
-GET http://localhost:8081/music
-X-Token: {{token}}
+
