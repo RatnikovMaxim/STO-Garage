@@ -18,8 +18,6 @@ public class OrderRequestDTO {
     @NotNull
     private Station station;
     @NotNull
-    private List<Long> serviceIds;
-    @NotNull
     private String status;
 
     @AllArgsConstructor

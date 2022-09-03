@@ -14,8 +14,10 @@ import com.example.orders.entity.OrderPositionEntity;
 import com.example.orders.exception.ForbiddenException;
 import com.example.orders.exception.OrderNotFoundException;
 import com.example.orders.exception.ServiceAlreadyExistsException;
+import com.example.orders.model.OrderMessage;
 import com.example.orders.repository.OrderPositionRepository;
 import com.example.orders.repository.OrderRepository;
+import com.example.orders.service.OrderKafkaService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,16 +34,20 @@ public class OrderManager {
     private final OrderRepository orderRepository;
     private final OrderPositionRepository orderPositionRepository;
     private final CatalogServiceClient catalogServiceClient;
+
+    private final OrderKafkaService orderKafkaService;
     private final String appToken;
 
     public OrderManager(
             final OrderRepository orderRepository,
             final OrderPositionRepository orderPositionRepository,
             final CatalogServiceClient catalogServiceClient,
+            final OrderKafkaService orderKafkaService,
             @Value("${app.token}") final String appToken) {
         this.orderRepository = orderRepository;
         this.orderPositionRepository = orderPositionRepository;
         this.catalogServiceClient = catalogServiceClient;
+        this.orderKafkaService = orderKafkaService;
         this.appToken = appToken;
     }
 
@@ -167,6 +173,11 @@ public class OrderManager {
         }
         final OrderEntity orderEntity = orderRepository.getReferenceById(id);
         orderEntity.setStatus("завершён");
+
+        final OrderMessage message = OrderMessage.builder()
+                .build();
+        orderKafkaService.send(message);
+
         return orderEntityToOrderResponseDTO.apply(orderEntity);
     }
 

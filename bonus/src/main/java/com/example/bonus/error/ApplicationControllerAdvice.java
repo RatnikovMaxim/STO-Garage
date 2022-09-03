@@ -2,7 +2,7 @@ package com.example.bonus.error;
 
 
 import com.example.bonus.exception.ForbiddenException;
-import com.example.bonus.exception.OrderNotFoundException;
+import com.example.bonus.exception.BonusNotFoundException;
 import com.example.bonus.exception.ServiceAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -32,7 +32,7 @@ public class ApplicationControllerAdvice {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponseDTO handle(final OrderNotFoundException e) {
+    public ErrorResponseDTO handle(final BonusNotFoundException e) {
         return new ErrorResponseDTO(ErrorResponseDTO.THE_ORDER_CANNOT_FIND_THE_DATA);
     }
 }
