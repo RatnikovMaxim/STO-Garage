@@ -1,6 +1,6 @@
 INSERT INTO orders (user_id, user_name, station_id, station_name, status)
-VALUES (1, 'Vasiliy', 1, 'Авто Доктор', 'заброннирован'),
-       (1, 'Vasiliy', 2, 'Мир Машин', 'заброннирован');
+VALUES (1, 'Vasiliy', 1, 'Авто Доктор', 'забронирован'),
+       (1, 'Vasiliy', 2, 'Мир Машин', 'забронирован');
 
 
 INSERT INTO order_positions (order_id, service_id, service_name, price)
