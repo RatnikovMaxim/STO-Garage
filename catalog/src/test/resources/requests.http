@@ -60,7 +60,7 @@ X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "name": "Название сервиса 4",
+  "name": "Название сервиса ПРОВЕРКА",
   "serviceIds": [1, 2, 3]
 }
 
@@ -71,7 +71,7 @@ X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "id": 5,
+  "id": 6,
   "name": "Название Stations UPDATE",
   "serviceIds": [5, 2, 3]
 }
