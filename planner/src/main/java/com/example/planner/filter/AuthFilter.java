@@ -43,7 +43,7 @@ public class AuthFilter extends HttpFilter {
                         new VerificationRequestDTO(token)
                 );
                 final Authentication authentication = new Authentication(
-                        responseDTO.getId(), responseDTO.getRoles()
+                        responseDTO.getId(), responseDTO.getRoles(), responseDTO.getStationId()
                 );
                 req.setAttribute("authentication", authentication);
             } catch (RuntimeException e) {

@@ -28,6 +28,6 @@ public class UserEntity {
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role", nullable = false, columnDefinition = "TEXT")
     private List<String> roles;
-  //  @Column(name = "station_id", nullable = false)
-//     private long stationId;
+    @Column(name = "station_id", nullable = false)
+    private long stationId;
 }
