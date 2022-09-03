@@ -4,6 +4,7 @@ CREATE TABLE users
     name     TEXT        NOT NULL UNIQUE,
     login    TEXT        NOT NULL UNIQUE,
     password TEXT        NOT NULL,
+    station_id    BIGINT NOT NULL,
     created  TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

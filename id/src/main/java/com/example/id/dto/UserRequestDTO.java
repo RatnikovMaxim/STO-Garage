@@ -25,4 +25,7 @@ public class UserRequestDTO {
     @NotNull
     @Size(min = 1, max = 100)
     private List<@NotNull @Pattern(regexp = "ROLE_[A-Z]{1,100}") String> roles;
+//   добавил стейшн айди
+    @NotNull
+    private long stationId;
 }
