@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Long> {
     List<AppointmentEntity> findAllByStationIdAndTimeBetween(long stationId, Instant start, Instant finish);
+    List<AppointmentEntity> findAllByUserIdAndTimeBetween(long userId, Instant start, Instant finish);
 }
