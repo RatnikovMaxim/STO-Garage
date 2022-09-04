@@ -103,60 +103,124 @@ public class AppointmentManager {
 
     public AppointmentResponseDTO getById(final Authentication authentication, long id) {
 
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_PLANNER)) {
-            throw new ForbiddenException();
+        if (authentication.hasRole(ROLE_PLANNER)) {
+            final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
+
+            if (appointmentEntity.getStation().getId() == authentication.getStationId()) {
+                return appointmentRepository.findById(id)
+                        .map(appointmentEntityToAppointmentResponseDTO)
+                        .orElseThrow(AppointmentNotFoundException::new)
+                        ;
+            }
+            else throw new ForbiddenException();
         }
-        return appointmentRepository.findById(id)
-                .map(appointmentEntityToAppointmentResponseDTO)
-                .orElseThrow(AppointmentNotFoundException::new)
-                ;
+
+        if (authentication.hasRole(ROLE_USER)) {
+            final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
+
+            if (appointmentEntity.getUser().getId() == authentication.getId()) {
+                return appointmentRepository.findById(id)
+                        .map(appointmentEntityToAppointmentResponseDTO)
+                        .orElseThrow(AppointmentNotFoundException::new)
+                        ;
+            }
+            else throw new ForbiddenException();
+        }
+
+    else throw new ForbiddenException();
     }
 
     public AppointmentResponseDTO create(final Authentication authentication, final AppointmentRequestDTO requestDTO) {
-        if (!authentication.hasRole(ROLE_USER)) {
-            throw new ForbiddenException();
+
+        if (authentication.hasRole(ROLE_USER) || authentication.hasRole(ROLE_PLANNER)) {
+            final AppointmentEntity appointmentEntity = new AppointmentEntity(
+                    0,
+                    userToUserEmbedded.apply(requestDTO.getUser()),
+                    stationToStationEmbedded.apply(requestDTO.getStation()),
+                    Collections.emptyList(),
+                    requestDTO.getTime(),
+                    requestDTO.getStatus(),
+                    Instant.now()
+            );
+            final AppointmentEntity savedEntity = appointmentRepository.save(appointmentEntity);
+            return appointmentEntityToAppointmentResponseDTO.apply(savedEntity);
         }
 
-        final AppointmentEntity appointmentEntity = new AppointmentEntity(
-                0,
-                userToUserEmbedded.apply(requestDTO.getUser()),
-                stationToStationEmbedded.apply(requestDTO.getStation()),
-                Collections.emptyList(),
-                requestDTO.getTime(),
-                requestDTO.getStatus(),
-                Instant.now()
-        );
-        final AppointmentEntity savedEntity = appointmentRepository.save(appointmentEntity);
-        return appointmentEntityToAppointmentResponseDTO.apply(savedEntity);
+        else throw new ForbiddenException();
     }
 
     public AppointmentResponseDTO addServiceForId(final Authentication authentication, final long id, final AppointmentServiceRequestDTO requestDTO) {
-        AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
-        final StationResponseDTO stationDTO = catalogServiceClient.getStationById(appToken, appointmentEntity.getStation().getId());
-        final StationResponseDTO.Service service = stationDTO.getServices().stream()
-                .filter(o -> o.getId() == requestDTO.getServiceId())
-                .findFirst()
-                .orElseThrow(RuntimeException::new);
+        if (authentication.hasRole(ROLE_USER)) {
+            AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
+            final StationResponseDTO stationDTO = catalogServiceClient.getStationById(appToken, appointmentEntity.getStation().getId());
+            final StationResponseDTO.Service service = stationDTO.getServices().stream()
+                    .filter(o -> o.getId() == requestDTO.getServiceId())
+                    .findFirst()
+                    .orElseThrow(RuntimeException::new);
 
-        AppointmentServiceEntity appointmentServiceEntity = new AppointmentServiceEntity(
-                0,
-                new AppointmentServiceEntity.ServiceEmbedded(service.getId(), service.getName()),
-                appointmentEntity
-        );
-        AppointmentServiceEntity savedEntity = appointmentServiceRepository.save(appointmentServiceEntity);
-        return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
+            AppointmentServiceEntity appointmentServiceEntity = new AppointmentServiceEntity(
+                    0,
+                    new AppointmentServiceEntity.ServiceEmbedded(service.getId(), service.getName()),
+                    appointmentEntity
+            );
+            AppointmentServiceEntity savedEntity = appointmentServiceRepository.save(appointmentServiceEntity);
+            return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
+        }
+
+        if (authentication.hasRole(ROLE_PLANNER)) {
+            AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
+            if (id == authentication.getStationId()) {
+                    final StationResponseDTO stationDTO = catalogServiceClient.getStationById(appToken, appointmentEntity.getStation().getId());
+                    final StationResponseDTO.Service service = stationDTO.getServices().stream()
+                            .filter(o -> o.getId() == requestDTO.getServiceId())
+                            .findFirst()
+                            .orElseThrow(RuntimeException::new);
+
+                    AppointmentServiceEntity appointmentServiceEntity = new AppointmentServiceEntity(
+                            0,
+                            new AppointmentServiceEntity.ServiceEmbedded(service.getId(), service.getName()),
+                            appointmentEntity
+                    );
+                    AppointmentServiceEntity savedEntity = appointmentServiceRepository.save(appointmentServiceEntity);
+                    return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
+                }
+
+                else throw new ForbiddenException();
+        }
+
+        else throw new ForbiddenException();
     }
 
     public AppointmentResponseDTO removeServiceForId(final Authentication authentication, final long id, final long positionId) {
-        AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
-        AppointmentServiceEntity appointmentServiceEntity = appointmentServiceRepository.findById(positionId).orElseThrow(RuntimeException::new);
-        if (appointmentServiceEntity.getService().getId() != appointmentEntity.getId()) {
+        if (authentication.hasRole(ROLE_USER)) {
+            AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
+            AppointmentServiceEntity appointmentServiceEntity = appointmentServiceRepository.findById(positionId).orElseThrow(RuntimeException::new);
+            if (appointmentServiceEntity.getAppointment().getId() != appointmentEntity.getId()) {
+                throw new ForbiddenException();
+            }
+            appointmentServiceRepository.delete(appointmentServiceEntity);
+            appointmentEntity.getServices().remove(appointmentServiceEntity);
+
+            return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
         }
 
-        appointmentServiceRepository.delete(appointmentServiceEntity);
-        appointmentEntity.getServices().remove(appointmentServiceEntity);
+        if (authentication.hasRole(ROLE_PLANNER)) {
+            if (id == authentication.getStationId()) {
+                AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
+                AppointmentServiceEntity appointmentServiceEntity = appointmentServiceRepository.findById(positionId).orElseThrow(RuntimeException::new);
+                if (appointmentServiceEntity.getAppointment().getId() != appointmentEntity.getId()) {
+                    throw new ForbiddenException();
+                }
+                appointmentServiceRepository.delete(appointmentServiceEntity);
+                appointmentEntity.getServices().remove(appointmentServiceEntity);
 
-        return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
+                return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
+            }
+
+            else throw new ForbiddenException();
+        }
+
+        else throw new ForbiddenException();
     }
 
     public AppointmentResponseDTO finishById(final Authentication authentication, final long id) {
