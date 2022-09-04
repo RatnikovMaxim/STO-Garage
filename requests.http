@@ -65,31 +65,44 @@ Content-Type: application/json
 DELETE http://localhost:8001/users/2
 X-Token: {{token}}
 
+
+
+
+
 ###==CATALOG===
 
-### services.getAll
-GET http://localhost:8002/services
+### search
+GET http://localhost:8002/stations_search?query=Авто&language=russian
 X-Token: {{token}}
+
+
 
 ### stations.getAll
 GET http://localhost:8002/stations
 X-Token: {{token}}
 
+### services.getAll
+GET http://localhost:8002/services
+X-Token: {{token}}
+
+
 ### stations.getById
 GET http://localhost:8002/stations/1
 X-Token: {{token}}
 
-### services.getById
+### stations.getById
 GET http://localhost:8002/services/1
 X-Token: {{token}}
 
-### services.create
+
+
+### stations.create
 POST http://localhost:8002/services
 X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "name": "Замена масла"
+  "name": "Вид работ 3"
 }
 
 ### stations.create
@@ -98,30 +111,37 @@ X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "name": "КАНАВТОГРАД",
+  "name": "Название сервиса ПРОВЕРКА",
   "serviceIds": [1, 2, 3]
 }
 
+
 ### stations.update
-PUT http://localhost:8002/stations/1
+PUT http://localhost:8002/stations
 X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "name": "ТТСАВТО",
-  "servicesIds": [5, 2, 3]
+  "id": 5,
+  "name": "Название Stations UPDATE",
+  "serviceIds": [5, 2, 3]
 }
 
-### services.deleteById
-DELETE http://localhost:8002/services/1
+### services.update
+PUT http://localhost:8002/services
 X-Token: {{token}}
+Content-Type: application/json
 
-### stations.deleteById
-DELETE http://localhost:8002/stations/1
-X-Token: {{token}}
+{
+  "id": 5,
+  "name": "Название Services UPDATE",
+  "serviceIds": [5, 2, 3]
+}
 
 
-===PLANNER===
+
+
+###===PLANNER===
 
 ### planner.getAll
 GET http://localhost:8003/planner?start=1662190040&finish=1662228351
