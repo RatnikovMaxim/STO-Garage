@@ -188,11 +188,11 @@ X-Token: {{token}}
 PUT http://localhost:8003/planner/2
 X-Token: {{token}}
 
-### planner.deleteById
-DELETE http://localhost:8003/planner/10
+### planner.removeById
+DELETE http://localhost:8003/planner/4
 X-Token: {{token}}
 
-===ORDERS===
+===ORDERS==
 
 
 ### orders.getAll конкретной СТО
