@@ -102,6 +102,7 @@ public class AppointmentManager {
     }
 
     public AppointmentResponseDTO getById(final Authentication authentication, long id) {
+
         if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_PLANNER)) {
             throw new ForbiddenException();
         }
@@ -160,15 +161,39 @@ public class AppointmentManager {
 
     public AppointmentResponseDTO finishById(final Authentication authentication, final long id) {
 
-        final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
-        appointmentEntity.setStatus("клиент приехал");
-        return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
+        if (authentication.hasRole(ROLE_PLANNER)) {
+            final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
+
+            if (appointmentEntity.getStation().getId() == authentication.getStationId()) {
+                appointmentEntity.setStatus("клиент приехал");
+                return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
+            }
+            else throw new ForbiddenException();
+        }
+        else throw new ForbiddenException();
     }
 
-    public void deleteById(Authentication authentication, long id) {
-        if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_PLANNER)) {
-            throw new ForbiddenException();
+    public AppointmentResponseDTO removeById(Authentication authentication, long id) {
+
+        if (authentication.hasRole(ROLE_PLANNER)) {
+            final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
+
+            if (appointmentEntity.getStation().getId() == authentication.getStationId()) {
+                appointmentEntity.setStatus("отменено");
+                return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
+            }
+            else throw new ForbiddenException();
         }
-        appointmentRepository.deleteById(id);
+
+        if (authentication.hasRole(ROLE_USER)) {
+            final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
+
+            if (appointmentEntity.getUser().getId() == authentication.getId()) {
+                appointmentEntity.setStatus("отменено");
+                return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
+            }
+            else throw new ForbiddenException();
+        }
+        else throw new ForbiddenException();
     }
 }

@@ -75,10 +75,11 @@ public class AppointmentController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(
+    public AppointmentResponseDTO removeById(
             @RequestAttribute final Authentication authentication,
             @Min(1) @PathVariable final long id
     ) {
-        manager.deleteById(authentication, id);
+        final AppointmentResponseDTO responseDTO = manager.removeById(authentication, id);
+        return responseDTO;
     }
 }
