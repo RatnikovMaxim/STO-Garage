@@ -1,11 +1,11 @@
 CREATE TABLE users
 (
-    id       BIGSERIAL PRIMARY KEY,
-    name     TEXT        NOT NULL UNIQUE,
-    login    TEXT        NOT NULL UNIQUE,
-    password TEXT        NOT NULL,
-    station_id    BIGINT NOT NULL,
-    created  TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+    id         BIGSERIAL PRIMARY KEY,
+    login      TEXT        NOT NULL UNIQUE,
+    name       TEXT        NOT NULL UNIQUE,
+    password   TEXT        NOT NULL,
+    station_id BIGINT      NOT NULL,
+    created    TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE user_roles
