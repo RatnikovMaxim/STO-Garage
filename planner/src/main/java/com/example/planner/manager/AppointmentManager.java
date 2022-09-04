@@ -78,16 +78,26 @@ public class AppointmentManager {
 
     public List<AppointmentResponseDTO> getAll(
             final Authentication authentication,
-            final long stationId, final long start, final long finish) {
+            final long start, final long finish) {
 
         if (authentication.hasRole(ROLE_PLANNER)) {
 
             return appointmentRepository.findAllByStationIdAndTimeBetween(
-                            stationId, Instant.ofEpochSecond(start), Instant.ofEpochSecond(finish)
+                            authentication.getStationId(), Instant.ofEpochSecond(start), Instant.ofEpochSecond(finish)
                     ).stream()
                     .map(appointmentEntityToAppointmentResponseDTO)
                     .collect(Collectors.toList());
         }
+
+        if (authentication.hasRole(ROLE_USER)) {
+
+            return appointmentRepository.findAllByUserIdAndTimeBetween(
+                            authentication.getId(), Instant.ofEpochSecond(start), Instant.ofEpochSecond(finish)
+                    ).stream()
+                    .map(appointmentEntityToAppointmentResponseDTO)
+                    .collect(Collectors.toList());
+        }
+
         else throw new ForbiddenException();
     }
 

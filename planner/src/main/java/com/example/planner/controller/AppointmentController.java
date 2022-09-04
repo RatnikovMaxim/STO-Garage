@@ -23,9 +23,9 @@ public class AppointmentController {
     @GetMapping
     public List<AppointmentResponseDTO> getAll(
             @RequestAttribute final Authentication authentication,
-            @RequestParam final long stationId, final long start, final long finish
+            @RequestParam final long start, final long finish
     ) {
-        final List<AppointmentResponseDTO> responseDTO = manager.getAll(authentication, stationId, start, finish);
+        final List<AppointmentResponseDTO> responseDTO = manager.getAll(authentication, start, finish);
         return responseDTO;
     }
 
