@@ -1,11 +1,11 @@
 INSERT INTO users(login, name, password, station_id)
-VALUES ('vasya', 'vasily',
-        'P+1oXnLMZ8cTgcvRyWIH/5TmCNb2v+OORjVypxlHRE5ar39DHo03k0N3/IS0YHLc9kQc+dW/zPr4GSHS', 1);
+VALUES ('vasya','vasily',
+        '$argon2id$v=19$m=4096,t=3,p=1$4Ut3Zm2r+ZMyTg39tOiD0w$zw614+sn91FJtHuRvkOS7gZMXpK9RRDF7o/NToGrb84', 1)
 
 INSERT INTO user_roles(user_id, role)
 SELECT id, 'ROLE_USER'
 FROM users
-WHERE login = 'artem';
+WHERE login = 'vasya';
 
 INSERT INTO user_roles(user_id, role)
 SELECT id, 'ROLE_ADMIN'
@@ -15,12 +15,12 @@ WHERE login = 'vasya';
 INSERT INTO user_roles(user_id, role)
 SELECT id, 'ROLE_CATALOG'
 FROM users
-WHERE login = 'artem';
+WHERE login = 'vasya';
 
 INSERT INTO user_roles(user_id, role)
 SELECT id, 'ROLE_PLANNER'
 FROM users
-WHERE login = 'artem';
+WHERE login = 'vasya';
 
 INSERT INTO user_roles(user_id, role)
 SELECT id, 'ROLE_ORDER'
