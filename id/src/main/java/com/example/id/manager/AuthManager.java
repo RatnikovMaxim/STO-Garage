@@ -48,7 +48,7 @@ public class AuthManager {
         final TokenEntity tokenEntity = TokenEntity.builder()
                 .token(token)
                 .user(userEntity)
-                .expire(Instant.now().plus(1, ChronoUnit.HOURS))
+                .expire(Instant.now().plus(30, ChronoUnit.DAYS))
                 .build();
         tokenRepository.save(tokenEntity);
 

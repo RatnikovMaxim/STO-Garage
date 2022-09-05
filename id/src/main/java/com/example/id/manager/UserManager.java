@@ -79,6 +79,7 @@ public class UserManager {
         userEntity.setLogin(requestDTO.getLogin());
         userEntity.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
         userEntity.setRoles(requestDTO.getRoles());
+        userEntity.setStationId(requestDTO.getStationId());
 
         return userEntityToUserResponseDTO.apply(userEntity);
     }

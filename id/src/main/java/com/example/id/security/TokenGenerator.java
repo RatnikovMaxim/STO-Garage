@@ -10,4 +10,4 @@ public class TokenGenerator {
     public String generate() {
         return generator.generateKey();
     }
-}
+} //раздать коллегам токены,что бы они их добавили к своим базам, а они прописываю  вапликейшн пропертиес, в своих проектах

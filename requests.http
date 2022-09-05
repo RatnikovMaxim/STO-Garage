@@ -31,7 +31,7 @@ Content-Type: application/json
 }
 
 ### id.getById
-GET http://localhost:8001/users/1
+GET http://localhost:8001/users/2
 X-Token: {{token}}
 
 ### id.create
@@ -41,11 +41,11 @@ Content-Type: application/json
 
 {
   "id": 0,
-  "login": "mstr",
-  "name": "master kanavtograd",
-  "password": "123456789",
-  "roles":["ROLE_CATALOG"],
-  "stationId": 1
+  "login": "planner",
+  "name": "kostya",
+  "password": "passwordplanner",
+  "roles":["ROLE_PLANNER"],
+  "stationId": 3
 }
 
 ### id.update
@@ -54,15 +54,15 @@ X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "id": 0,
-  "login": "mng",
-  "name": "manager",
-  "password": "12345678",
-  "roles":["ROLE_USER"]
+  "id": 4,
+  "login": "planner",
+  "name": "kostya",
+  "password": "passwordplanner",
+  "roles":["ROLE_CATALOG"]
 }
 
 ### id.deleteById
-DELETE http://localhost:8001/users/2
+DELETE http://localhost:8001/users/4
 X-Token: {{token}}
 
 
