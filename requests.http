@@ -31,7 +31,7 @@ Content-Type: application/json
 }
 
 ### id.getById
-GET http://localhost:8001/users/3
+GET http://localhost:8001/users/1
 X-Token: {{token}}
 
 ### id.create
@@ -41,11 +41,11 @@ Content-Type: application/json
 
 {
   "id": 0,
-  "login": "artem",
-  "name": "bonus",
-  "password": "passwordbonus",
+  "login": "manager",
+  "name": "avtomir",
+  "password": "passwordavtomir",
   "roles":["ROLE_USER","ROLE_CATALOG","ROLE_PLANNER","ROLE_ORDER","ROLE_BONUS"],
-  "stationId": 6
+  "stationId": 4
 }
 
 ### id.update
@@ -55,14 +55,14 @@ Content-Type: application/json
 
 {
   "id": 4,
-  "login": "amir",
-  "name": "catalog",
-  "password": "passwordcatalog",
-  "roles":["ROLE_USER","ROLE_CATALOG","ROLE_PLANNER","ROLE_ORDER"]
+  "login": "manager",
+  "name": "avtomir",
+  "password": "passwordavtomir",
+  "roles":["ROLE_USER","ROLE_CATALOG","ROLE_PLANNER"]
 }
 
 ### id.deleteById
-DELETE http://localhost:8001/users/6
+DELETE http://localhost:8001/users/4
 X-Token: {{token}}
 
 

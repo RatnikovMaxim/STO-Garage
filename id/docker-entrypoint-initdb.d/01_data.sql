@@ -1,6 +1,6 @@
 INSERT INTO users(login, name, password, station_id)
 VALUES ('vasya','vasily',
-        '$argon2id$v=19$m=4096,t=3,p=1$4Ut3Zm2r+ZMyTg39tOiD0w$zw614+sn91FJtHuRvkOS7gZMXpK9RRDF7o/NToGrb84', 1)
+        '$argon2id$v=19$m=4096,t=3,p=1$4Ut3Zm2r+ZMyTg39tOiD0w$zw614+sn91FJtHuRvkOS7gZMXpK9RRDF7o/NToGrb84', 1);
 
 INSERT INTO user_roles(user_id, role)
 SELECT id, 'ROLE_USER'
