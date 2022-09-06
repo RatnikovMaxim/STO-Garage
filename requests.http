@@ -144,11 +144,11 @@ Content-Type: application/json
 ###===PLANNER===
 
 ### planner.getAll
-GET http://localhost:8003/planner?start=1662190040&finish=1662228351
+GET http://localhost:8003/planner?start=1662199141&finish=16621991412
 X-Token: {{token}}
 
 ### planner.getById
-GET http://localhost:8003/planner/4
+GET http://localhost:8003/planner/1
 X-Token: {{token}}
 
 ### planner.create

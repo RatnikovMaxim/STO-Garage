@@ -32,20 +32,11 @@ SELECT id, 'ROLE_BONUS'
 FROM users
 WHERE login = 'vasya';
 
-INSERT INTO user_roles(user_id, role)
-SELECT id, 'ROLE_CATALOG'
-FROM users
-WHERE login = 'amir';
-
-INSERT INTO user_roles(user_id, role)
-SELECT id, 'ROLE_PLANNER'
-FROM users
-WHERE login = 'kostya';
-
 INSERT INTO tokens(token, user_id, expire)
-SELECT '',
-       id,
-       CURRENT_TIMESTAMP + interval '30 days'
+SELECT
+    'rzl00lRt66/pTUrCCYSeRdzRaQKfz9ZZV5q63NIafNy4Wn6YvsekXRHeqIXJst+5nQn+HU1iWE0E/PoZ',
+    id,
+    CURRENT_TIMESTAMP + interval '1 year'
 FROM users
 WHERE login = 'vasya';
 
