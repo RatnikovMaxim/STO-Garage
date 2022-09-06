@@ -133,20 +133,25 @@ public class AppointmentManager {
     public AppointmentResponseDTO create(final Authentication authentication, final AppointmentRequestDTO requestDTO) {
 
         if (authentication.hasRole(ROLE_USER) || authentication.hasRole(ROLE_PLANNER)) {
-            final AppointmentEntity appointmentEntity = new AppointmentEntity(
-                    0,
-                    userToUserEmbedded.apply(requestDTO.getUser()),
-                    stationToStationEmbedded.apply(requestDTO.getStation()),
-                    Collections.emptyList(),
-                    requestDTO.getTime(),
-                    requestDTO.getStatus(),
-                    Instant.now()
-            );
-            final AppointmentEntity savedEntity = appointmentRepository.save(appointmentEntity);
-            return appointmentEntityToAppointmentResponseDTO.apply(savedEntity);
-        }
 
-        else throw new ForbiddenException();
+            if (appointmentRepository.findAllByStationIdAndTime(requestDTO.getStation().getId(), requestDTO.getTime()
+                    ) == null) {
+
+                final AppointmentEntity appointmentEntity = new AppointmentEntity(
+                        0,
+                        userToUserEmbedded.apply(requestDTO.getUser()),
+                        stationToStationEmbedded.apply(requestDTO.getStation()),
+                        Collections.emptyList(),
+                        requestDTO.getTime(),
+                        requestDTO.getStatus(),
+                        Instant.now()
+                );
+                final AppointmentEntity savedEntity = appointmentRepository.save(appointmentEntity);
+                return appointmentEntityToAppointmentResponseDTO.apply(savedEntity);
+
+            } else throw new ForbiddenException();
+
+        } else throw new ForbiddenException();
     }
 
     public AppointmentResponseDTO addServiceForId(final Authentication authentication, final long id, final AppointmentServiceRequestDTO requestDTO) {
