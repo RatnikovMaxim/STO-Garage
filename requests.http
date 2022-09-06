@@ -166,12 +166,12 @@ Content-Type: application/json
     "id": 4,
     "name": "Проверка 9:59"
   },
-  "time": 1662199140,
+  "time": 1662199141,
   "status": "забронировано"
 }
 
 ### planner.addService
-POST http://localhost:8003/planner/5/services
+POST http://localhost:8003/planner/1/services
 X-Token: {{token}}
 Content-Type: application/json
 
