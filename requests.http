@@ -144,11 +144,11 @@ Content-Type: application/json
 ###===PLANNER===
 
 ### planner.getAll
-GET http://localhost:8003/planner?start=1662190040&finish=1662228351
+GET http://localhost:8003/planner?start=1662199141&finish=16621991412
 X-Token: {{token}}
 
 ### planner.getById
-GET http://localhost:8003/planner/4
+GET http://localhost:8003/planner/1
 X-Token: {{token}}
 
 ### planner.create
@@ -163,15 +163,34 @@ Content-Type: application/json
     "name": "Vasya"
   },
   "station": {
-    "id": 4,
+    "id": 3,
     "name": "Проверка 9:59"
   },
-  "time": 1662199140,
+  "time": 1662199141,
+  "status": "забронировано"
+}
+
+### planner.update
+PUT http://localhost:8003/planner
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "id": 2,
+  "user": {
+    "id": 1,
+    "name": "Vasya"
+  },
+  "station": {
+    "id": 4,
+    "name": "Проверка"
+  },
+  "time": 2132199143,
   "status": "забронировано"
 }
 
 ### planner.addService
-POST http://localhost:8003/planner/5/services
+POST http://localhost:8003/planner/2/services
 X-Token: {{token}}
 Content-Type: application/json
 
