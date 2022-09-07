@@ -163,15 +163,34 @@ Content-Type: application/json
     "name": "Vasya"
   },
   "station": {
-    "id": 4,
+    "id": 3,
     "name": "Проверка 9:59"
   },
   "time": 1662199141,
   "status": "забронировано"
 }
 
+### planner.update
+PUT http://localhost:8003/planner
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "id": 2,
+  "user": {
+    "id": 1,
+    "name": "Vasya"
+  },
+  "station": {
+    "id": 4,
+    "name": "Проверка"
+  },
+  "time": 2132199143,
+  "status": "забронировано"
+}
+
 ### planner.addService
-POST http://localhost:8003/planner/1/services
+POST http://localhost:8003/planner/2/services
 X-Token: {{token}}
 Content-Type: application/json
 

@@ -47,6 +47,15 @@ public class AppointmentController {
         return responseDTO;
     }
 
+    @PutMapping
+    public AppointmentResponseDTO update(
+            @RequestAttribute final Authentication authentication,
+            @Valid @RequestBody final AppointmentRequestDTO requestDTO
+    ) {
+        final AppointmentResponseDTO responseDTO = manager.update(authentication, requestDTO);
+        return responseDTO;
+    }
+
     @PostMapping("/{id}/services")
     public AppointmentResponseDTO addService(
             @RequestAttribute final Authentication authentication,
