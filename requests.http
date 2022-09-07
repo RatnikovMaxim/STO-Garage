@@ -6,8 +6,8 @@ POST http://localhost:8001/auth
 Content-Type: application/json
 
 {
-  "login": "vasya",
-  "password": "password"
+  "login": "bonus1",
+  "password": "passwordbonus"
 }
 
 > {% client.global.set("token", response.body.token); %}
@@ -41,11 +41,11 @@ Content-Type: application/json
 
 {
   "id": 0,
-  "login": "manager",
-  "name": "avtomir",
-  "password": "passwordavtomir",
-  "roles":["ROLE_USER","ROLE_CATALOG","ROLE_PLANNER","ROLE_ORDER","ROLE_BONUS"],
-  "stationId": 4
+  "login": "bonus1",
+  "name": "bonussrv",
+  "password": "passwordbonus",
+  "roles":["ROLE_ADMIN"],
+  "stationId": 0
 }
 
 ### id.update
