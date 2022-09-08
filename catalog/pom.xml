@@ -18,7 +18,7 @@
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2021.0.3</spring-cloud.version>
-        <tika-core.version>2.4.1</tika-core.version>
+        <logback-classic.version>1.2.11</logback-classic.version>
     </properties>
 
     <dependencies>
@@ -71,7 +71,11 @@
             <scope>compile</scope>
         </dependency>
 
-
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-classic.version}</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
