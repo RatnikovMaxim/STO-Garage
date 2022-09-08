@@ -6,8 +6,8 @@ POST http://localhost:8001/auth
 Content-Type: application/json
 
 {
-  "login": "bonus1",
-  "password": "passwordbonus"
+  "login": "planer",
+  "password": "planerpass"
 }
 
 > {% client.global.set("token", response.body.token); %}
@@ -144,11 +144,11 @@ Content-Type: application/json
 ###===PLANNER===
 
 ### planner.getAll
-GET http://localhost:8003/planner?start=1662199141&finish=16621991412
+GET http://localhost:8003/planner?start=1182299143&finish=1782299145
 X-Token: {{token}}
 
 ### planner.getById
-GET http://localhost:8003/planner/1
+GET http://localhost:8003/planner/4
 X-Token: {{token}}
 
 ### planner.create
@@ -159,14 +159,14 @@ Content-Type: application/json
 {
   "id": 0,
   "user": {
-    "id": 1,
-    "name": "Vasya"
+    "id": 7,
+    "name": "user"
   },
   "station": {
-    "id": 3,
-    "name": "Проверка 9:59"
+    "id": 1,
+    "name": "Автосеть Гараж"
   },
-  "time": 1662199141,
+  "time": 1982299145,
   "status": "забронировано"
 }
 
@@ -176,40 +176,68 @@ X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "id": 2,
+  "id": 3,
   "user": {
-    "id": 1,
-    "name": "Vasya"
+    "id": 7,
+    "name": "user"
   },
   "station": {
-    "id": 4,
-    "name": "Проверка"
+    "id": 1,
+    "name": "Автосеть Гараж"
   },
-  "time": 2132199143,
+  "time": 1782299245,
   "status": "забронировано"
 }
 
 ### planner.addService
-POST http://localhost:8003/planner/2/services
+POST http://localhost:8003/planner/4/services
 X-Token: {{token}}
 Content-Type: application/json
 
 {
   "id": 0,
-  "serviceId": 4
+  "serviceId": 1
 }
 
 ### planner.removeService
-DELETE http://localhost:8003/planner/4/services/9
+DELETE http://localhost:8003/planner/4/services/1
 X-Token: {{token}}
 
 ### planner.finishByid
-PUT http://localhost:8003/planner/2
+PUT http://localhost:8003/planner/4
 X-Token: {{token}}
 
 ### planner.removeById
 DELETE http://localhost:8003/planner/4
 X-Token: {{token}}
+
+### id.create USER
+POST http://localhost:8001/users
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "login": "user",
+  "name": "user",
+  "password": "userpass",
+  "roles":["ROLE_USER"],
+  "stationId": -1
+}
+
+### id.create PLANNER
+POST http://localhost:8001/users
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "login": "planer",
+  "name": "planer",
+  "password": "planerpass",
+  "roles":["ROLE_PLANNER"],
+  "stationId": 1
+}
 
 ===ORDERS==
 
