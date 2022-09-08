@@ -1,6 +1,6 @@
 package com.example.planner.exception;
 
-public class ForbiddenException extends RuntimeException {
+public class ForbiddenException extends Exception {
     public ForbiddenException() {
     }
 

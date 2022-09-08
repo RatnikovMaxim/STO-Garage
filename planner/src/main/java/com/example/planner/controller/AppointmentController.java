@@ -3,6 +3,7 @@ package com.example.planner.controller;
 import com.example.planner.dto.AppointmentRequestDTO;
 import com.example.planner.dto.AppointmentResponseDTO;
 import com.example.planner.dto.AppointmentServiceRequestDTO;
+import com.example.planner.exception.*;
 import com.example.planner.manager.AppointmentManager;
 import com.example.planner.security.Authentication;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class AppointmentController {
     public List<AppointmentResponseDTO> getAll(
             @RequestAttribute final Authentication authentication,
             @RequestParam final long start, final long finish
-    ) {
+    ) throws ForbiddenException {
         final List<AppointmentResponseDTO> responseDTO = manager.getAll(authentication, start, finish);
         return responseDTO;
     }
@@ -33,7 +34,7 @@ public class AppointmentController {
     public AppointmentResponseDTO getById(
             @RequestAttribute final Authentication authentication,
             @Min(1) @PathVariable final long id
-    ) {
+    ) throws ForbiddenException, InvalidStationException, InvalidUserException, AppointmentNotFoundException {
         final AppointmentResponseDTO responseDTO = manager.getById(authentication, id);
         return responseDTO;
     }
@@ -42,7 +43,7 @@ public class AppointmentController {
     public AppointmentResponseDTO create(
             @RequestAttribute final Authentication authentication,
             @Valid @RequestBody final AppointmentRequestDTO requestDTO
-    ) {
+    ) throws ForbiddenException, InvalidStationException, TimeAlreadyTakenException {
         final AppointmentResponseDTO responseDTO = manager.create(authentication, requestDTO);
         return responseDTO;
     }
@@ -51,7 +52,7 @@ public class AppointmentController {
     public AppointmentResponseDTO update(
             @RequestAttribute final Authentication authentication,
             @Valid @RequestBody final AppointmentRequestDTO requestDTO
-    ) {
+    ) throws ForbiddenException, InvalidStationException, InvalidUserException, TimeAlreadyTakenException {
         final AppointmentResponseDTO responseDTO = manager.update(authentication, requestDTO);
         return responseDTO;
     }
@@ -61,7 +62,7 @@ public class AppointmentController {
             @RequestAttribute final Authentication authentication,
             @Min(1) @PathVariable final long id,
             @Valid @RequestBody final AppointmentServiceRequestDTO requestDTO
-    ) {
+    ) throws ForbiddenException, InvalidStationException, InvalidUserException {
         return manager.addServiceForId(authentication, id, requestDTO);
     }
 
@@ -70,7 +71,7 @@ public class AppointmentController {
             @RequestAttribute final Authentication authentication,
             @Min(1) @PathVariable final long id,
             @Min(1) @PathVariable final long serviceId
-    ) {
+    ) throws ForbiddenException, InvalidStationException, InvalidUserException {
         return manager.removeServiceForId(authentication, id, serviceId);
     }
 
@@ -78,7 +79,7 @@ public class AppointmentController {
     public AppointmentResponseDTO finishById(
             @RequestAttribute final Authentication authentication,
             @Min(1) @PathVariable final long id
-    ) {
+    ) throws ForbiddenException, InvalidStationException {
         final AppointmentResponseDTO responseDTO = manager.finishById(authentication, id);
         return responseDTO;
     }
@@ -87,7 +88,7 @@ public class AppointmentController {
     public AppointmentResponseDTO removeById(
             @RequestAttribute final Authentication authentication,
             @Min(1) @PathVariable final long id
-    ) {
+    ) throws ForbiddenException, InvalidStationException, InvalidUserException {
         final AppointmentResponseDTO responseDTO = manager.removeById(authentication, id);
         return responseDTO;
     }
