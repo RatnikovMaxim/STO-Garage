@@ -8,6 +8,7 @@ import com.example.planner.exception.*;
 import com.example.planner.repository.AppointmentRepository;
 import com.example.planner.repository.AppointmentServiceRepository;
 import com.example.planner.security.Authentication;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import static com.example.planner.security.Roles.*;
 
 @Component
 @Transactional
+@Slf4j
 public class AppointmentManager {
     private final AppointmentRepository appointmentRepository;
     private final AppointmentServiceRepository appointmentServiceRepository;
