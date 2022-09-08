@@ -16,6 +16,7 @@ public class ErrorResponseDTO {
     public static final String EXECUTE_ACCESS_FORBIDDEN = "Execute access forbidden";
     public static final String THE_SERVER_CANNOT_FIND_THE_DATA = "the server cannot find the data";
     public static final String THE_SERVER_CANNOT_FIND_USER_DATA = "the server cannot find user data";
+    public static final String NOTHING_WAS_FOUND_FOR_YOUR_QUERY = "nothing was found for your query";
 
     private  String  message;
 }

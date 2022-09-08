@@ -1,6 +1,6 @@
 package com.example.catalog.exception;
 
-public class ServiceNotFoundException extends RuntimeException {
+public class ServiceNotFoundException extends Exception {
     public ServiceNotFoundException() {
     }
 

@@ -2,6 +2,8 @@ package com.example.catalog.controller;
 
 import com.example.catalog.dto.ServiceRequestDTO;
 import com.example.catalog.dto.ServiceResponseDTO;
+import com.example.catalog.exception.ForbiddenException;
+import com.example.catalog.exception.ServiceNotFoundException;
 import com.example.catalog.manager.ServiceManager;
 import com.example.id.security.Authentication;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,7 @@ public class ServiceController {
     public ServiceResponseDTO getById(
             @RequestAttribute final Authentication authentication,
             @Min(1) @PathVariable final long id
-    ) {
+    ) throws ServiceNotFoundException {
         final ServiceResponseDTO responseDTO = manager.getById(authentication, id);
         return responseDTO;
     }
@@ -37,7 +39,7 @@ public class ServiceController {
     public ServiceResponseDTO create(
             @RequestAttribute final Authentication authentication,
             @Valid @RequestBody final ServiceRequestDTO requestDTO
-    ) {
+    ) throws ForbiddenException {
         final ServiceResponseDTO responseDTO = manager.create(authentication, requestDTO);
         return responseDTO;
     }
@@ -45,7 +47,7 @@ public class ServiceController {
     public ServiceResponseDTO update(
             @RequestAttribute final Authentication authentication,
             @Valid @RequestBody final ServiceRequestDTO requestDTO
-    ) {
+    ) throws ForbiddenException {
         final ServiceResponseDTO responseDTO = manager.update(authentication, requestDTO);
         return responseDTO;
     }
@@ -53,7 +55,7 @@ public class ServiceController {
     public void deleteById(
             @RequestAttribute final Authentication authentication,
             @Min(1) @PathVariable final long id
-    ) {
+    ) throws ForbiddenException {
         manager.deleteById(authentication, id);
     }
 

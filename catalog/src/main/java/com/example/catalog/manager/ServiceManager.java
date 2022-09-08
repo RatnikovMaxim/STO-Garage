@@ -40,7 +40,7 @@ public class ServiceManager {
                 .collect(Collectors.toList());
     }
 
-    public ServiceResponseDTO getById(Authentication authentication, long id) {
+    public ServiceResponseDTO getById(Authentication authentication, long id) throws ServiceNotFoundException {
         log.info("Получение из списка услуги CTO по ID");
         return serviceRepository.findById(id)
                 .map(serviceEntityServiceResponseDTOFunction)
@@ -48,7 +48,7 @@ public class ServiceManager {
                 ;
     }
 
-    public ServiceResponseDTO create(final Authentication authentication, final ServiceRequestDTO requestDTO) {
+    public ServiceResponseDTO create(final Authentication authentication, final ServiceRequestDTO requestDTO) throws ForbiddenException {
         log.info("Создание услуги в СТО каталога");
         if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_CATALOG)) {
             throw new ForbiddenException();
@@ -62,7 +62,7 @@ public class ServiceManager {
         return serviceEntityServiceResponseDTOFunction.apply(savedEntity);
     }
 
-    public ServiceResponseDTO update(final Authentication authentication, final ServiceRequestDTO requestDTO) {
+    public ServiceResponseDTO update(final Authentication authentication, final ServiceRequestDTO requestDTO) throws ForbiddenException {
         log.info("Изменение услуги CTO");
         if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_CATALOG)) {
             throw new ForbiddenException();
@@ -75,7 +75,7 @@ public class ServiceManager {
         return serviceEntityServiceResponseDTOFunction.apply(serviceEntity);
     }
 
-    public void deleteById(final Authentication authentication, final long id) {
+    public void deleteById(final Authentication authentication, final long id) throws ForbiddenException {
         log.info("Удаление услуги СТО окончательно");
         if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_CATALOG)) {
             throw new ForbiddenException();

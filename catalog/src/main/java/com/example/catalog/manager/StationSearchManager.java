@@ -1,6 +1,7 @@
 package com.example.catalog.manager;
 
 
+import com.example.catalog.dto.InvalidRequestExceptionDTO;
 import com.example.catalog.dto.StationResponseDTO;
 import com.example.catalog.dto.StationSearchResponseDTO;
 import com.example.catalog.entity.StationEntity;
@@ -25,12 +26,12 @@ public class StationSearchManager {
             entity.getId(),
             entity.getName()
     );
-    public List<StationSearchResponseDTO> search(String query, String language) {
+    public  List<StationSearchResponseDTO> search(String query, String language) throws InvalidRequestExceptionDTO {
         log.info("Поиск СТО в каталоге по названию");
-        return stationRepository.search(query,language).stream()
-                .map(stationEntityStationSearchResponseDTOFunction)
-                .collect(Collectors.toList());
 
+            return stationRepository.search(query, language).stream()
+                    .map(stationEntityStationSearchResponseDTOFunction)
+                    .collect(Collectors.toList());
 
     }
 }

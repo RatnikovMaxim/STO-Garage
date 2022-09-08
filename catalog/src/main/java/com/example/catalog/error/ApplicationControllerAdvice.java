@@ -1,6 +1,8 @@
 package com.example.catalog.error;
 
 
+import com.example.catalog.dto.InvalidRequestExceptionDTO;
+import com.example.catalog.exception.StationNotFoundException;
 import com.example.id.exception.ForbiddenException;
 import com.example.catalog.exception.ServiceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -27,4 +29,16 @@ public class ApplicationControllerAdvice {
     public ErrorResponseDTO handle(final ServiceNotFoundException e) {
         return new ErrorResponseDTO(ErrorResponseDTO.THE_SERVER_CANNOT_FIND_THE_DATA);
     }
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponseDTO handle(final StationNotFoundException e) {
+        return new ErrorResponseDTO(ErrorResponseDTO.THE_SERVER_CANNOT_FIND_THE_DATA);
+    }
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponseDTO handle(final InvalidRequestExceptionDTO e) {
+        return new ErrorResponseDTO(ErrorResponseDTO.NOTHING_WAS_FOUND_FOR_YOUR_QUERY);
+    }
+
+
 }

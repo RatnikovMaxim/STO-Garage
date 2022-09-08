@@ -46,14 +46,14 @@ public class StationManager {
                 .collect(Collectors.toList());
     }
 
-    public StationResponseDTO getById(Authentication authentication, long id) {
+    public StationResponseDTO getById(Authentication authentication, long id) throws StationNotFoundException {
         log.info("Получение CTO по ID");
         return stationRepository.findById(id)
                 .map(stationEntityStationResponseDTOFunction)
                 .orElseThrow(StationNotFoundException::new);
     }
 
-    public StationResponseDTO create(final Authentication authentication, final StationRequestDTO requestDTO) {
+    public StationResponseDTO create(final Authentication authentication, final StationRequestDTO requestDTO) throws ForbiddenException {
         log.info("Создание СТО в каталог");
         if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_CATALOG)){
             throw new ForbiddenException();
@@ -71,7 +71,7 @@ public class StationManager {
         return stationEntityStationResponseDTOFunction.apply(savedEntity);
     }
 
-    public StationResponseDTO update(final Authentication authentication, final StationRequestDTO requestDTO) {
+    public StationResponseDTO update(final Authentication authentication, final StationRequestDTO requestDTO) throws ForbiddenException {
         log.info("Изменение CTO");
         if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_CATALOG)) {
             throw new ForbiddenException();
@@ -90,7 +90,7 @@ public class StationManager {
         return stationEntityStationResponseDTOFunction.apply(stationEntity);
     }
 
-    public void deleteById(final Authentication authentication, final long id) {
+    public void deleteById(final Authentication authentication, final long id) throws ForbiddenException {
         log.info("Удаление СТО окончательно");
         if (!authentication.hasRole(Roles.ROLE_ADMIN) && authentication.hasRole(ROLE_CATALOG)) {
             throw new ForbiddenException();
