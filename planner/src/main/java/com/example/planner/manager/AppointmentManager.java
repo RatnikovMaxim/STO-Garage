@@ -8,6 +8,7 @@ import com.example.planner.exception.*;
 import com.example.planner.repository.AppointmentRepository;
 import com.example.planner.repository.AppointmentServiceRepository;
 import com.example.planner.security.Authentication;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import static com.example.planner.security.Roles.*;
 
 @Component
 @Transactional
+@Slf4j
 public class AppointmentManager {
     private final AppointmentRepository appointmentRepository;
     private final AppointmentServiceRepository appointmentServiceRepository;
@@ -74,9 +76,9 @@ public class AppointmentManager {
     public List<AppointmentResponseDTO> getAll(
             final Authentication authentication,
             final long start, final long finish) throws ForbiddenException {
+        log.info("Получение всех забронированных ремонтов");
 
         if (authentication.hasRole(ROLE_PLANNER)) {
-
             return appointmentRepository.findAllByStationIdAndTimeBetween(
                             authentication.getStationId(), Instant.ofEpochSecond(start), Instant.ofEpochSecond(finish)
                     ).stream()
@@ -97,6 +99,7 @@ public class AppointmentManager {
     }
 
     public AppointmentResponseDTO getById(final Authentication authentication, long id) throws InvalidStationException, InvalidUserException, AppointmentNotFoundException, ForbiddenException {
+        log.info("Получение забронированного ремонта по ID");
         final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
 
         if (authentication.hasRole(ROLE_PLANNER)) {
@@ -123,7 +126,7 @@ public class AppointmentManager {
     }
 
     public AppointmentResponseDTO create(final Authentication authentication, final AppointmentRequestDTO requestDTO) throws InvalidStationException, ForbiddenException, TimeAlreadyTakenException {
-
+        log.info("Бронирование ремонта");
         if (authentication.hasRole(ROLE_USER)) {
             return createAppointment(requestDTO);
         }
@@ -157,6 +160,7 @@ public class AppointmentManager {
     }
 
     public AppointmentResponseDTO update(final Authentication authentication, final AppointmentRequestDTO requestDTO) throws TimeAlreadyTakenException, InvalidUserException, InvalidStationException, ForbiddenException {
+        log.info("Изменение времени бронирования");
         final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(requestDTO.getId());
 
         if (appointmentRepository.findAllByStationIdAndTime(requestDTO.getStation().getId(), requestDTO.getTime()) != null) {
@@ -203,6 +207,7 @@ public class AppointmentManager {
     }
 
     private AppointmentResponseDTO addServiceForIdAppointment(AppointmentServiceRequestDTO requestDTO, AppointmentEntity appointmentEntity) {
+        log.info("Добавление услуги в бронирование");
         final StationResponseDTO stationDTO = catalogServiceClient.getStationById(appToken, appointmentEntity.getStation().getId());
         final StationResponseDTO.Service service = stationDTO.getServices().stream()
                 .filter(o -> o.getId() == requestDTO.getServiceId())
@@ -219,6 +224,7 @@ public class AppointmentManager {
     }
 
     public AppointmentResponseDTO removeServiceForId(final Authentication authentication, final long id, final long positionId) throws InvalidUserException, InvalidStationException, ForbiddenException {
+        log.info("Удаление услуги из бронирования");
         AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
 
         if (authentication.hasRole(ROLE_USER)) {
@@ -250,7 +256,7 @@ public class AppointmentManager {
     }
 
     public AppointmentResponseDTO finishById(final Authentication authentication, final long id) throws InvalidStationException, ForbiddenException {
-
+        log.info("Клиент приехал на ремонт");
         if (authentication.hasRole(ROLE_PLANNER)) {
             final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
 
@@ -265,7 +271,7 @@ public class AppointmentManager {
     }
 
     public AppointmentResponseDTO removeById(Authentication authentication, long id) throws InvalidStationException, InvalidUserException, ForbiddenException {
-
+        log.info("Отмена бронирования");
         if (authentication.hasRole(ROLE_PLANNER)) {
             final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
 
