@@ -57,7 +57,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/{id}/positions/{positionId}")
-    public OrderResponseDTO addPosition(
+    public OrderResponseDTO deletePosition(
             @RequestAttribute final Authentication authentication,
             @Min(1) @PathVariable final long id,
             @Min(1) @PathVariable final long positionId

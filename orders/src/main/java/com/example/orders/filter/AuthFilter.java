@@ -29,7 +29,7 @@ public class AuthFilter extends HttpFilter {
     }
 
     @Override
-    protected void doFilter(final HttpServletRequest req, final HttpServletResponse res, final FilterChain chain) throws IOException, ServletException, ServletException {
+    protected void doFilter(final HttpServletRequest req, final HttpServletResponse res, final FilterChain chain) throws IOException, ServletException {
         final String token = req.getHeader("X-Token");
         log.debug("token: {}", token);
 
@@ -43,7 +43,7 @@ public class AuthFilter extends HttpFilter {
                         new VerificationRequestDTO(token)
                 );
                 final Authentication authentication = new Authentication(
-                        responseDTO.getId(), responseDTO.getRoles()
+                        responseDTO.getId(), responseDTO.getRoles(), responseDTO.getStationId()
                 );
                 req.setAttribute("authentication", authentication);
             } catch (RuntimeException e) {

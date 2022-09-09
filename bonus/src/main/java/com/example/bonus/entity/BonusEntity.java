@@ -28,7 +28,7 @@ public class BonusEntity {
 
     private long orderId;
 
-    private int bonusSum;
+    private long bonusSum;
 
     private Instant created;
 

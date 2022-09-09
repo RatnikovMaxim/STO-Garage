@@ -5,7 +5,8 @@ CREATE TABLE orders
     user_name    TEXT        NOT NULL,
     station_id   BIGINT      NOT NULL /*из Catalog*/,
     station_name TEXT        NOT NULL,
-    status       TEXT        NOT NULL, /* "заброннирован", "в работе", "выполнен" */
+    status       TEXT        NOT NULL, /* "забронирован", "в работе", "завершён", "отменён" */
+    notified     BOOLEAN     NOT NULL DEFAULT FALSE,
     removed      BOOLEAN     NOT NULL DEFAULT FALSE,
     created      TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -26,7 +27,7 @@ CREATE TABLE history
     owner_id      BIGINT      NOT NULL /*из users*/,
     station_id    BIGINT      NOT NULL /*из Catalog*/,
     service_id    BIGINT      NOT NUll /*из services*/,
-    status        TEXT        NOT NULL, /* "выполнен" */
+    status        TEXT        NOT NULL, /* "завершён", "отменён" */
     order_created timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

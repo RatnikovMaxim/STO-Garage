@@ -34,29 +34,29 @@ public class BonusController {
         return responseDTO;
     }
 
-    @PostMapping
-    public BonusResponseDTO create(
-            @RequestAttribute final Authentication authentication,
-            @Valid @RequestBody final BonusRequestDTO requestDTO
-    ) {
-        final BonusResponseDTO responseDTO = manager.create(authentication, requestDTO);
-        return responseDTO;
-    }
-    @PutMapping
-    public BonusResponseDTO update(
-            @RequestAttribute final Authentication authentication,
-            @Valid @RequestBody final BonusRequestDTO requestDTO
-    ) {
-        final BonusResponseDTO responseDTO = manager.update(authentication, requestDTO);
-        return responseDTO;
-    }
-    @DeleteMapping("/{id}")
-    public void deleteById(
-            @RequestAttribute final Authentication authentication,
-            @Min(1) @PathVariable final long id
-    ) {
-        manager.deleteById(authentication, id);
-    }
+//    @PostMapping
+//    public BonusResponseDTO create(
+//            @RequestAttribute final Authentication authentication,
+//            @Valid @RequestBody final BonusRequestDTO requestDTO
+//    ) {
+//        final BonusResponseDTO responseDTO = manager.create(authentication, requestDTO);
+//        return responseDTO;
+//    }
+//    @PutMapping
+//    public BonusResponseDTO update(
+//            @RequestAttribute final Authentication authentication,
+//            @Valid @RequestBody final BonusRequestDTO requestDTO
+//    ) {
+//        final BonusResponseDTO responseDTO = manager.update(authentication, requestDTO);
+//        return responseDTO;
+//    }
+//    @DeleteMapping("/{id}")
+//    public void deleteById(
+//            @RequestAttribute final Authentication authentication,
+//            @Min(1) @PathVariable final long id
+//    ) {
+//        manager.deleteById(authentication, id);
+//    }
 
 
 
