@@ -54,7 +54,7 @@ X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "id": 4,
+  "id": 1,
   "login": "manager",
   "name": "avtomir",
   "password": "passwordavtomir",
@@ -68,8 +68,7 @@ X-Token: {{token}}
 
 
 
-
-###==CATALOG===
+===CATALOG===
 
 ### search
 GET http://localhost:8002/stations_search?query=Авто&language=russian
@@ -196,12 +195,12 @@ X-Token: {{token}}
 
 
 ### orders.getAll конкретной СТО
-GET http://localhost:8004/orders?stationId=2&start=1661806800&finish=1669863343
+GET http://localhost:8004/orders?stationId=1&start=1661806800&finish=1699863343
 X-Token: {{token}}
 
 
 ### orders.getById
-GET http://localhost:8004/orders/1
+GET http://localhost:8004/orders/2
 X-Token: {{token}}
 
 
@@ -217,11 +216,10 @@ Content-Type: application/json
     "name": "vasya"
   },
   "station": {
-    "id": 6,
+    "id": 1,
     "name": "Fordгараж"
   },
-  "serviceIds": [1, 2],
-  "status": "заброннирован"
+  "status": "забронирован"
 }
 
 ### orders.addPosition
@@ -231,7 +229,7 @@ Content-Type: application/json
 
 {
   "id": 0,
-  "serviceId": 2,
+  "serviceId": 1,
   "price": 400000
 }
 
@@ -240,11 +238,11 @@ DELETE http://localhost:8004/orders/1/positions/7
 X-Token: {{token}}
 
 ### orders.finishByid
-PUT http://localhost:8004/orders/1
+PUT http://localhost:8004/orders/8
 X-Token: {{token}}
 
 ### orders.deleteById
-DELETE http://localhost:8004/orders/1
+DELETE http://localhost:8004/orders/2
 X-Token: {{token}}
 
 

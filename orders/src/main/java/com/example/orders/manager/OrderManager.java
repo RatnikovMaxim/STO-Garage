@@ -5,6 +5,7 @@ import com.example.id.security.Roles;
 import static com.example.id.security.Roles.ROLE_USER;
 
 import com.example.orders.client.CatalogServiceClient;
+import com.example.orders.client.IdServiceClient;
 import com.example.orders.dto.OrderPositionRequestDTO;
 import com.example.orders.dto.OrderRequestDTO;
 import com.example.orders.dto.OrderResponseDTO;
@@ -17,8 +18,10 @@ import com.example.orders.exception.ServiceAlreadyExistsException;
 import com.example.orders.model.OrderMessage;
 import com.example.orders.repository.OrderPositionRepository;
 import com.example.orders.repository.OrderRepository;
-import com.example.orders.service.OrderKafkaService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.id.security.Authentication;
@@ -30,24 +33,24 @@ import java.util.stream.Collectors;
 
 @Component
 @Transactional
+@Slf4j
 public class OrderManager {
     private final OrderRepository orderRepository;
     private final OrderPositionRepository orderPositionRepository;
     private final CatalogServiceClient catalogServiceClient;
-
-    private final OrderKafkaService orderKafkaService;
+    private final KafkaTemplate<String, OrderMessage> kafkaTemplate;
     private final String appToken;
 
     public OrderManager(
             final OrderRepository orderRepository,
             final OrderPositionRepository orderPositionRepository,
             final CatalogServiceClient catalogServiceClient,
-            final OrderKafkaService orderKafkaService,
+            final KafkaTemplate<String, OrderMessage> kafkaTemplate,
             @Value("${app.token}") final String appToken) {
         this.orderRepository = orderRepository;
         this.orderPositionRepository = orderPositionRepository;
         this.catalogServiceClient = catalogServiceClient;
-        this.orderKafkaService = orderKafkaService;
+        this.kafkaTemplate = kafkaTemplate;
         this.appToken = appToken;
     }
 
@@ -119,12 +122,12 @@ public class OrderManager {
                 stationToStationEmbedded.apply(requestDTO.getStation()),
                 Collections.emptyList(),
                 requestDTO.getStatus(),
+                false,
                 Instant.now()
         );
-//        OrderPositionEntity savedEntity = orderPositionRepository.save(orderPositionEntity); // CASCADE
-//        return orderEntityToOrderResponseDTO.apply(orderEntity);
+
         final OrderEntity savedEntity = orderRepository.save(orderEntity);
-        return orderEntityToOrderResponseDTO.apply(orderEntity);
+        return orderEntityToOrderResponseDTO.apply(savedEntity);
     }
 
     public OrderResponseDTO addPositionForId(final Authentication authentication, final long id, final OrderPositionRequestDTO requestDTO) {
@@ -174,9 +177,7 @@ public class OrderManager {
         final OrderEntity orderEntity = orderRepository.getReferenceById(id);
         orderEntity.setStatus("завершён");
 
-        final OrderMessage message = OrderMessage.builder()
-                .build();
-        orderKafkaService.send(message);
+        sendToKafka(orderEntity);
 
         return orderEntityToOrderResponseDTO.apply(orderEntity);
     }
@@ -186,5 +187,55 @@ public class OrderManager {
             throw new ForbiddenException();
         }
         orderRepository.deleteById(id);
+    }
+
+    public void sendToKafka(final OrderEntity orderEntity) {
+        final OrderEntity.UserEmbedded user = orderEntity.getUser();
+        final OrderEntity.StationEmbedded station = orderEntity.getStation();
+        final OrderMessage message = OrderMessage.builder()
+                .id(orderEntity.getId())
+                .user(
+                        OrderMessage.User.builder()
+                                .id(user.getId())
+                                .name(user.getName())
+                                .build()
+                )
+                .station(
+                        OrderMessage.Station.builder()
+                                .id(station.getId())
+                                .name(station.getName())
+                                .build()
+                )
+                .positions(
+                        orderEntity.getPositions().stream()
+                                .map(o -> OrderMessage.Position.builder()
+                                        .id(o.getId())
+                                        .service(OrderMessage.Position.Service.builder()
+                                                .id(o.getService().getId())
+                                                .name(o.getService().getName())
+                                                .build())
+                                        .price(o.getPrice())
+                                        .build()
+                                )
+                                .collect(Collectors.toList())
+                )
+                .status(orderEntity.getStatus())
+                .created(orderEntity.getCreated())
+                .build();
+
+        kafkaTemplate.send("orders", message).addCallback(
+                result -> {
+                    log.debug("sent to kafka: {}", message);
+                    orderRepository.markNotified(message.getId());
+                },
+                e -> {
+                    log.error("can't send to kafka: {}", message, e);
+                }
+        );
+    }
+
+    @Scheduled(fixedDelay = 5_000)
+    public void resendToKafka() {
+        orderRepository.findTop5ByNotifiedIsFalseAndStatusOrderById("завершён").forEach(this::sendToKafka);
     }
 }

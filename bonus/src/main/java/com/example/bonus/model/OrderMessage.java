@@ -1,4 +1,4 @@
-package com.example.orders.model;
+package com.example.bonus.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,8 +14,8 @@ import java.util.List;
 @Data
 public class OrderMessage {
     private long id;
-    private OrderMessage.User user;
-    private OrderMessage.Station station;
+    private User user;
+    private Station station;
     private List<Position> positions;
     private String status;
     private Instant created;

@@ -1,15 +1,12 @@
 package com.example.orders.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
-
+@Builder
 @Entity
 @Table(name = "orders")
 @NoArgsConstructor
@@ -32,6 +29,7 @@ public class OrderEntity {
     private List<OrderPositionEntity> positions;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String status;
+    private boolean notified; // флаг - отправили в кафку или нет
     @Column(
             insertable = false,
             updatable = false,

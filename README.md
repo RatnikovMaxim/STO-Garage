@@ -14,3 +14,4 @@ bonus - Артём.
 
 Предварительный срок сдачи проекта  10 сентября 2022г.
 
+docker-compose exec kafka kafka-console-consumer.sh --topic orders --from-beginning --bootstrap-server localhost:9092
