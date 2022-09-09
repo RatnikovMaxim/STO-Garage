@@ -1,5 +1,5 @@
 
-===ID===
+###===ID===
 
 ### id.auth
 POST http://localhost:8001/auth
@@ -41,11 +41,11 @@ Content-Type: application/json
 
 {
   "id": 0,
-  "login": "manager",
-  "name": "avtomir",
-  "password": "passwordavtomir",
-  "roles":["ROLE_USER","ROLE_CATALOG","ROLE_PLANNER","ROLE_ORDER","ROLE_BONUS"],
-  "stationId": 4
+  "login": "bonus1",
+  "name": "bonussrv",
+  "password": "passwordbonus",
+  "roles":["ROLE_ADMIN"],
+  "stationId": 0
 }
 
 ### id.update
@@ -94,25 +94,25 @@ GET http://localhost:8002/services/1
 X-Token: {{token}}
 
 
-
-### stations.create
-POST http://localhost:8002/services
-X-Token: {{token}}
-Content-Type: application/json
-
-{
-  "name": "Вид работ 3"
-}
-
 ### stations.create
 POST http://localhost:8002/stations
 X-Token: {{token}}
 Content-Type: application/json
 
 {
-  "name": "Название сервиса ПРОВЕРКА",
+  "name": "Создание СТО",
   "serviceIds": [1, 2, 3]
 }
+
+### services.create
+POST http://localhost:8002/services
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "name": "Создание услуги СТО"
+}
+
 
 
 ### stations.update
@@ -122,7 +122,7 @@ Content-Type: application/json
 
 {
   "id": 5,
-  "name": "Название Stations UPDATE",
+  "name": "Изменение СТО",
   "serviceIds": [5, 2, 3]
 }
 
@@ -133,7 +133,7 @@ Content-Type: application/json
 
 {
   "id": 5,
-  "name": "Название Services UPDATE",
+  "name": "Изменение сервиса СТО",
   "serviceIds": [5, 2, 3]
 }
 
@@ -143,11 +143,11 @@ Content-Type: application/json
 ###===PLANNER===
 
 ### planner.getAll
-GET http://localhost:8003/planner?start=1662199141&finish=16621991412
+GET http://localhost:8003/planner?start=1182299143&finish=1782299145
 X-Token: {{token}}
 
 ### planner.getById
-GET http://localhost:8003/planner/1
+GET http://localhost:8003/planner/4
 X-Token: {{token}}
 
 ### planner.create
@@ -158,40 +158,87 @@ Content-Type: application/json
 {
   "id": 0,
   "user": {
-    "id": 1,
-    "name": "Vasya"
+    "id": 7,
+    "name": "user"
   },
   "station": {
-    "id": 4,
-    "name": "Проверка 9:59"
+    "id": 1,
+    "name": "Автосеть Гараж"
   },
-  "time": 1662199141,
+  "time": 1982299145,
+  "status": "забронировано"
+}
+
+### planner.update
+PUT http://localhost:8003/planner
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "id": 3,
+  "user": {
+    "id": 7,
+    "name": "user"
+  },
+  "station": {
+    "id": 1,
+    "name": "Автосеть Гараж"
+  },
+  "time": 1782299245,
   "status": "забронировано"
 }
 
 ### planner.addService
-POST http://localhost:8003/planner/1/services
+POST http://localhost:8003/planner/4/services
 X-Token: {{token}}
 Content-Type: application/json
 
 {
   "id": 0,
-  "serviceId": 4
+  "serviceId": 1
 }
 
 ### planner.removeService
-DELETE http://localhost:8003/planner/4/services/9
+DELETE http://localhost:8003/planner/4/services/1
 X-Token: {{token}}
 
 ### planner.finishByid
-PUT http://localhost:8003/planner/2
+PUT http://localhost:8003/planner/4
 X-Token: {{token}}
 
 ### planner.removeById
 DELETE http://localhost:8003/planner/4
 X-Token: {{token}}
 
-===ORDERS==
+### id.create USER
+POST http://localhost:8001/users
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "login": "user",
+  "name": "user",
+  "password": "userpass",
+  "roles":["ROLE_USER"],
+  "stationId": -1
+}
+
+### id.create PLANNER
+POST http://localhost:8001/users
+X-Token: {{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "login": "planer",
+  "name": "planer",
+  "password": "planerpass",
+  "roles":["ROLE_PLANNER"],
+  "stationId": 1
+}
+
+###===ORDERS==
 
 
 ### orders.getAll конкретной СТО
@@ -246,7 +293,7 @@ DELETE http://localhost:8004/orders/2
 X-Token: {{token}}
 
 
-===BONUS===
+###===BONUS===
 
 ### bonus.getAll
 GET http://localhost:8006/bonus

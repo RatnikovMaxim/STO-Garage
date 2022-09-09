@@ -1,6 +1,6 @@
 package com.example.planner.exception;
 
-public class AppointmentNotFoundException extends RuntimeException{
+public class AppointmentNotFoundException extends Exception{
     public AppointmentNotFoundException() {
     }
 

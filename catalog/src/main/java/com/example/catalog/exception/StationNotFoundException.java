@@ -1,6 +1,6 @@
 package com.example.catalog.exception;
 
-public class StationNotFoundException extends RuntimeException {
+public class StationNotFoundException extends Exception {
     public StationNotFoundException() {
     }
 

@@ -1,6 +1,7 @@
 package com.example.catalog.controller;
 
 
+import com.example.catalog.dto.InvalidRequestExceptionDTO;
 import com.example.catalog.dto.StationSearchResponseDTO;
 import com.example.catalog.manager.StationSearchManager;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class StationSearchController {
     private final StationSearchManager manager;
 
     @GetMapping
-    public List<StationSearchResponseDTO> search(String query, String language) {
+    public List<StationSearchResponseDTO> search(String query, String language) throws InvalidRequestExceptionDTO {
         return manager.search(query, language);
 
     }

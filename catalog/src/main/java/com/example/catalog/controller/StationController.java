@@ -2,6 +2,8 @@ package com.example.catalog.controller;
 
 import com.example.catalog.dto.StationRequestDTO;
 import com.example.catalog.dto.StationResponseDTO;
+import com.example.catalog.exception.ForbiddenException;
+import com.example.catalog.exception.StationNotFoundException;
 import com.example.catalog.manager.StationManager;
 import com.example.id.security.Authentication;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,7 @@ public class StationController {
     public StationResponseDTO getById(
             @RequestAttribute final Authentication authentication,
             @Min(1) @PathVariable final long id
-    ) {
+    ) throws StationNotFoundException {
         final StationResponseDTO responseDTO = manager.getById(authentication, id);
         return responseDTO;
     }
@@ -37,7 +39,7 @@ public class StationController {
     public StationResponseDTO create(
             @RequestAttribute final Authentication authentication,
             @Valid @RequestBody final StationRequestDTO requestDTO
-    ) {
+    ) throws ForbiddenException {
         final StationResponseDTO responseDTO = manager.create(authentication, requestDTO);
         return responseDTO;
     }
@@ -45,7 +47,7 @@ public class StationController {
     public StationResponseDTO update(
             @RequestAttribute final Authentication authentication,
             @Valid @RequestBody final StationRequestDTO requestDTO
-    ) {
+    ) throws ForbiddenException {
         final StationResponseDTO responseDTO = manager.update(authentication, requestDTO);
         return responseDTO;
     }
@@ -53,7 +55,7 @@ public class StationController {
     public void deleteById(
             @RequestAttribute final Authentication authentication,
             @Min(1) @PathVariable final long id
-    ) {
+    ) throws ForbiddenException {
         manager.deleteById(authentication, id);
     }
 }

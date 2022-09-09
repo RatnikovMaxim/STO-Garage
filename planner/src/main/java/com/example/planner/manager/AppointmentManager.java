@@ -1,18 +1,14 @@
 package com.example.planner.manager;
 
 import com.example.planner.client.CatalogServiceClient;
-import com.example.planner.dto.AppointmentRequestDTO;
-import com.example.planner.dto.AppointmentResponseDTO;
-import com.example.planner.dto.AppointmentServiceRequestDTO;
-import com.example.planner.dto.StationResponseDTO;
+import com.example.planner.dto.*;
 import com.example.planner.entity.AppointmentEntity;
 import com.example.planner.entity.AppointmentServiceEntity;
-import com.example.planner.exception.AppointmentNotFoundException;
-import com.example.planner.exception.ForbiddenException;
+import com.example.planner.exception.*;
 import com.example.planner.repository.AppointmentRepository;
 import com.example.planner.repository.AppointmentServiceRepository;
 import com.example.planner.security.Authentication;
-import com.example.planner.security.Roles;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +23,7 @@ import static com.example.planner.security.Roles.*;
 
 @Component
 @Transactional
+@Slf4j
 public class AppointmentManager {
     private final AppointmentRepository appointmentRepository;
     private final AppointmentServiceRepository appointmentServiceRepository;
@@ -78,10 +75,10 @@ public class AppointmentManager {
 
     public List<AppointmentResponseDTO> getAll(
             final Authentication authentication,
-            final long start, final long finish) {
+            final long start, final long finish) throws ForbiddenException {
+        log.info("Получение всех забронированных ремонтов");
 
         if (authentication.hasRole(ROLE_PLANNER)) {
-
             return appointmentRepository.findAllByStationIdAndTimeBetween(
                             authentication.getStationId(), Instant.ofEpochSecond(start), Instant.ofEpochSecond(finish)
                     ).stream()
@@ -98,171 +95,203 @@ public class AppointmentManager {
                     .collect(Collectors.toList());
         }
 
-        else throw new ForbiddenException();
+        else throw new ForbiddenException(); // если ты не USER и не PLANNER
     }
 
-    public AppointmentResponseDTO getById(final Authentication authentication, long id) {
+    public AppointmentResponseDTO getById(final Authentication authentication, long id) throws InvalidStationException, InvalidUserException, AppointmentNotFoundException, ForbiddenException {
+        log.info("Получение забронированного ремонта по ID");
+        final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
 
         if (authentication.hasRole(ROLE_PLANNER)) {
-            final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
-
-            if (appointmentEntity.getStation().getId() == authentication.getStationId()) {
+            if (appointmentEntity.getStation().getId() != authentication.getStationId()) {
+                throw new InvalidStationException(); // если СТО не та на которой ты работаешь
+            }
                 return appointmentRepository.findById(id)
                         .map(appointmentEntityToAppointmentResponseDTO)
                         .orElseThrow(AppointmentNotFoundException::new)
                         ;
-            }
-            else throw new ForbiddenException();
         }
 
         if (authentication.hasRole(ROLE_USER)) {
-            final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
-
-            if (appointmentEntity.getUser().getId() == authentication.getId()) {
+            if (appointmentEntity.getUser().getId() != authentication.getId()) {
+                throw new InvalidUserException(); // если это не твой ремонт
+            }
                 return appointmentRepository.findById(id)
                         .map(appointmentEntityToAppointmentResponseDTO)
                         .orElseThrow(AppointmentNotFoundException::new)
                         ;
-            }
-            else throw new ForbiddenException();
         }
 
-    else throw new ForbiddenException();
+    else throw new ForbiddenException(); // если ты не USER и не PLANNER
     }
 
-    public AppointmentResponseDTO create(final Authentication authentication, final AppointmentRequestDTO requestDTO) {
-
-        if (authentication.hasRole(ROLE_USER) || authentication.hasRole(ROLE_PLANNER)) {
-
-            if (appointmentRepository.findAllByStationIdAndTime(requestDTO.getStation().getId(), requestDTO.getTime()
-                    ) == null) {
-
-                final AppointmentEntity appointmentEntity = new AppointmentEntity(
-                        0,
-                        userToUserEmbedded.apply(requestDTO.getUser()),
-                        stationToStationEmbedded.apply(requestDTO.getStation()),
-                        Collections.emptyList(),
-                        requestDTO.getTime(),
-                        requestDTO.getStatus(),
-                        Instant.now()
-                );
-                final AppointmentEntity savedEntity = appointmentRepository.save(appointmentEntity);
-                return appointmentEntityToAppointmentResponseDTO.apply(savedEntity);
-
-            } else throw new ForbiddenException();
-
-        } else throw new ForbiddenException();
-    }
-
-    public AppointmentResponseDTO addServiceForId(final Authentication authentication, final long id, final AppointmentServiceRequestDTO requestDTO) {
+    public AppointmentResponseDTO create(final Authentication authentication, final AppointmentRequestDTO requestDTO) throws InvalidStationException, ForbiddenException, TimeAlreadyTakenException {
+        log.info("Бронирование ремонта");
         if (authentication.hasRole(ROLE_USER)) {
-            AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
-            final StationResponseDTO stationDTO = catalogServiceClient.getStationById(appToken, appointmentEntity.getStation().getId());
-            final StationResponseDTO.Service service = stationDTO.getServices().stream()
-                    .filter(o -> o.getId() == requestDTO.getServiceId())
-                    .findFirst()
-                    .orElseThrow(RuntimeException::new);
+            return createAppointment(requestDTO);
+        }
 
-            AppointmentServiceEntity appointmentServiceEntity = new AppointmentServiceEntity(
-                    0,
-                    new AppointmentServiceEntity.ServiceEmbedded(service.getId(), service.getName()),
-                    appointmentEntity
-            );
-            AppointmentServiceEntity savedEntity = appointmentServiceRepository.save(appointmentServiceEntity);
+        if (authentication.hasRole(ROLE_PLANNER)) {
+            if (requestDTO.getStation().getId() != authentication.getStationId()) {
+                throw new InvalidStationException(); // если СТО не та на которой ты работаешь
+            }
+            return createAppointment(requestDTO);
+        }
+
+        else throw new ForbiddenException(); // если ты не USER и не PLANNER
+    }
+
+    private AppointmentResponseDTO createAppointment(AppointmentRequestDTO requestDTO) throws TimeAlreadyTakenException {
+        if (appointmentRepository.findAllByStationIdAndTime(requestDTO.getStation().getId(), requestDTO.getTime()) != null) {
+            throw new TimeAlreadyTakenException(); // если время на этой СТО занято
+        }
+
+        final AppointmentEntity appointmentEntity = new AppointmentEntity(
+                0,
+                userToUserEmbedded.apply(requestDTO.getUser()),
+                stationToStationEmbedded.apply(requestDTO.getStation()),
+                Collections.emptyList(),
+                requestDTO.getTime(),
+                requestDTO.getStatus(),
+                Instant.now()
+        );
+        final AppointmentEntity savedEntity = appointmentRepository.save(appointmentEntity);
+        return appointmentEntityToAppointmentResponseDTO.apply(savedEntity);
+    }
+
+    public AppointmentResponseDTO update(final Authentication authentication, final AppointmentRequestDTO requestDTO) throws TimeAlreadyTakenException, InvalidUserException, InvalidStationException, ForbiddenException {
+        log.info("Изменение времени бронирования");
+        final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(requestDTO.getId());
+
+        if (appointmentRepository.findAllByStationIdAndTime(requestDTO.getStation().getId(), requestDTO.getTime()) != null) {
+            throw new TimeAlreadyTakenException(); // если время на этой СТО занято
+        }
+
+        if (authentication.hasRole(ROLE_USER)) {
+            if (appointmentEntity.getUser().getId() != authentication.getId()) {
+                throw new InvalidUserException(); // если запрос на не твой плановый ремонт
+            }
+            appointmentEntity.setTime(requestDTO.getTime());
             return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
         }
 
         if (authentication.hasRole(ROLE_PLANNER)) {
-            AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
-            if (id == authentication.getStationId()) {
-                    final StationResponseDTO stationDTO = catalogServiceClient.getStationById(appToken, appointmentEntity.getStation().getId());
-                    final StationResponseDTO.Service service = stationDTO.getServices().stream()
-                            .filter(o -> o.getId() == requestDTO.getServiceId())
-                            .findFirst()
-                            .orElseThrow(RuntimeException::new);
-
-                    AppointmentServiceEntity appointmentServiceEntity = new AppointmentServiceEntity(
-                            0,
-                            new AppointmentServiceEntity.ServiceEmbedded(service.getId(), service.getName()),
-                            appointmentEntity
-                    );
-                    AppointmentServiceEntity savedEntity = appointmentServiceRepository.save(appointmentServiceEntity);
+            if (appointmentEntity.getStation().getId() != authentication.getStationId()) {
+                throw new InvalidStationException(); // если СТО не та на которой ты работаешь
+            }
+                    appointmentEntity.setTime(requestDTO.getTime());
                     return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
-                }
-
-                else throw new ForbiddenException();
         }
 
-        else throw new ForbiddenException();
+        else throw new ForbiddenException(); // если ты не USER и не PLANNER
     }
 
-    public AppointmentResponseDTO removeServiceForId(final Authentication authentication, final long id, final long positionId) {
-        if (authentication.hasRole(ROLE_USER)) {
-            AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
-            AppointmentServiceEntity appointmentServiceEntity = appointmentServiceRepository.findById(positionId).orElseThrow(RuntimeException::new);
-            if (appointmentServiceEntity.getAppointment().getId() != appointmentEntity.getId()) {
-                throw new ForbiddenException();
-            }
-            appointmentServiceRepository.delete(appointmentServiceEntity);
-            appointmentEntity.getServices().remove(appointmentServiceEntity);
+    public AppointmentResponseDTO addServiceForId(final Authentication authentication, final long id, final AppointmentServiceRequestDTO requestDTO) throws InvalidUserException, InvalidStationException, ForbiddenException {
+        AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
 
-            return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
+        if (authentication.hasRole(ROLE_USER)) {
+            if (appointmentEntity.getUser().getId() != authentication.getId()) {
+                throw new InvalidUserException(); // если запрос на не твой плановый ремонт
+            }
+            return addServiceForIdAppointment(requestDTO, appointmentEntity);
         }
 
         if (authentication.hasRole(ROLE_PLANNER)) {
-            if (id == authentication.getStationId()) {
-                AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
-                AppointmentServiceEntity appointmentServiceEntity = appointmentServiceRepository.findById(positionId).orElseThrow(RuntimeException::new);
-                if (appointmentServiceEntity.getAppointment().getId() != appointmentEntity.getId()) {
-                    throw new ForbiddenException();
-                }
-                appointmentServiceRepository.delete(appointmentServiceEntity);
-                appointmentEntity.getServices().remove(appointmentServiceEntity);
-
-                return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
+            if (appointmentEntity.getStation().getId() != authentication.getStationId()) {
+                throw new InvalidStationException(); // если СТО не та на которой ты работаешь
             }
-
-            else throw new ForbiddenException();
+            return addServiceForIdAppointment(requestDTO, appointmentEntity);
         }
 
-        else throw new ForbiddenException();
+        else throw new ForbiddenException(); // если ты не USER и не PLANNER
     }
 
-    public AppointmentResponseDTO finishById(final Authentication authentication, final long id) {
+    private AppointmentResponseDTO addServiceForIdAppointment(AppointmentServiceRequestDTO requestDTO, AppointmentEntity appointmentEntity) {
+        log.info("Добавление услуги в бронирование");
+        final StationResponseDTO stationDTO = catalogServiceClient.getStationById(appToken, appointmentEntity.getStation().getId());
+        final StationResponseDTO.Service service = stationDTO.getServices().stream()
+                .filter(o -> o.getId() == requestDTO.getServiceId())
+                .findFirst()
+                .orElseThrow(RuntimeException::new);
 
+        AppointmentServiceEntity appointmentServiceEntity = new AppointmentServiceEntity(
+                0,
+                new AppointmentServiceEntity.ServiceEmbedded(service.getId(), service.getName()),
+                appointmentEntity
+        );
+        AppointmentServiceEntity savedEntity = appointmentServiceRepository.save(appointmentServiceEntity);
+        return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
+    }
+
+    public AppointmentResponseDTO removeServiceForId(final Authentication authentication, final long id, final long positionId) throws InvalidUserException, InvalidStationException, ForbiddenException {
+        log.info("Удаление услуги из бронирования");
+        AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
+
+        if (authentication.hasRole(ROLE_USER)) {
+            if (appointmentEntity.getUser().getId() != authentication.getId()) {
+                throw new InvalidUserException(); // если запрос на не твой плановый ремонт
+            }
+            return removeServiceForIdAppointment(positionId, appointmentEntity);
+        }
+
+        if (authentication.hasRole(ROLE_PLANNER)) {
+            if (appointmentEntity.getStation().getId() != authentication.getStationId()) {
+                throw new InvalidStationException(); // если СТО не та на которой ты работаешь
+            }
+            return removeServiceForIdAppointment(positionId, appointmentEntity);
+        }
+
+        else throw new ForbiddenException(); // если ты не USER и не PLANNER
+    }
+
+    private AppointmentResponseDTO removeServiceForIdAppointment(long positionId, AppointmentEntity appointmentEntity) throws ForbiddenException {
+        AppointmentServiceEntity appointmentServiceEntity = appointmentServiceRepository.findById(positionId).orElseThrow(RuntimeException::new);
+        if (appointmentServiceEntity.getAppointment().getId() != appointmentEntity.getId()) {
+            throw new ForbiddenException();
+        }
+        appointmentServiceRepository.delete(appointmentServiceEntity);
+        appointmentEntity.getServices().remove(appointmentServiceEntity);
+
+        return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
+    }
+
+    public AppointmentResponseDTO finishById(final Authentication authentication, final long id) throws InvalidStationException, ForbiddenException {
+        log.info("Клиент приехал на ремонт");
         if (authentication.hasRole(ROLE_PLANNER)) {
             final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
 
-            if (appointmentEntity.getStation().getId() == authentication.getStationId()) {
+            if (appointmentEntity.getStation().getId() != authentication.getStationId()) {
+                throw new InvalidStationException(); // если СТО не та на которой ты работаешь
+            }
                 appointmentEntity.setStatus("клиент приехал");
                 return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
-            }
-            else throw new ForbiddenException();
         }
-        else throw new ForbiddenException();
+
+        else throw new ForbiddenException(); //  если ты не PLANNER
     }
 
-    public AppointmentResponseDTO removeById(Authentication authentication, long id) {
-
+    public AppointmentResponseDTO removeById(Authentication authentication, long id) throws InvalidStationException, InvalidUserException, ForbiddenException {
+        log.info("Отмена бронирования");
         if (authentication.hasRole(ROLE_PLANNER)) {
             final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
 
-            if (appointmentEntity.getStation().getId() == authentication.getStationId()) {
+            if (appointmentEntity.getStation().getId() != authentication.getStationId()) {
+                throw new InvalidStationException(); // если СТО не та на которой ты работаешь
+            }
                 appointmentEntity.setStatus("отменено");
                 return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
-            }
-            else throw new ForbiddenException();
         }
 
         if (authentication.hasRole(ROLE_USER)) {
             final AppointmentEntity appointmentEntity = appointmentRepository.getReferenceById(id);
 
-            if (appointmentEntity.getUser().getId() == authentication.getId()) {
+            if (appointmentEntity.getUser().getId() != authentication.getId()) {
+                throw new InvalidUserException(); // если запрос на не твой плановый ремонт
+            }
                 appointmentEntity.setStatus("отменено");
                 return appointmentEntityToAppointmentResponseDTO.apply(appointmentEntity);
-            }
-            else throw new ForbiddenException();
         }
-        else throw new ForbiddenException();
+
+        else throw new ForbiddenException(); // если ты не USER и не PLANNER
     }
 }
